@@ -70,7 +70,7 @@ export default function HomePage() {
 
             <div>
               <span className="block text-base leading-normal text-gray-800 lg:text-base">
-                {each.name}-{index}
+                {each.name}-{each.id}
               </span>
               <span className="block text-sm font-semibold leading-tight">
                 <span className="mr-2">₦</span>
