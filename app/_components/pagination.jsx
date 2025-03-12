@@ -38,7 +38,7 @@ export default function Pagination({ count }) {
         <button
           onClick={prevPage}
           disabled={currentPage === 1}
-          className={`flex aspect-square items-center justify-center bg-DarkOrange text-sm font-medium text-white transition-all duration-200 ease-linear hover:bg-DarkOrange/70 ${
+          className={`flex aspect-square items-center justify-center bg-dark-orange text-sm font-medium text-white transition-all duration-200 ease-linear hover:bg-DarkOrange/70 ${
             currentPage === 1 ? "cursor-not-allowed" : "cursor-pointer"
           }`}
         >
