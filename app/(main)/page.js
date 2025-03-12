@@ -50,7 +50,7 @@ export default function HomePage() {
   return (
     <div className="bg-gray-100 px-2 py-8 md:px-4">
       <div className="grid gap-4 sm2:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5 xl:gap-5">
-        {product?.map((each) => (
+        {product?.map((each, index) => (
           <div
             key={each.id}
             className="cursor-pointer space-y-2 rounded-md px-1 py-1 shadow-sm2 shadow-gray-200"
@@ -70,7 +70,7 @@ export default function HomePage() {
 
             <div>
               <span className="block text-base leading-normal text-gray-800 lg:text-base">
-                {each.name}
+                {each.name}-{index}
               </span>
               <span className="block text-sm font-semibold leading-tight">
                 <span className="mr-2">₦</span>
