@@ -6,6 +6,7 @@ import { PAGE_SIZE } from "../utils/constant";
 import { useEffect } from "react";
 import { useProducts } from "../hooks/useProduct";
 import Loader from "../loading";
+import Link from "next/link";
 
 export default function HomePage() {
   const searchParams = useSearchParams();
@@ -51,7 +52,8 @@ export default function HomePage() {
     <div className="bg-gray-100 px-2 py-8 md:px-4">
       <div className="grid gap-4 sm2:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5 xl:gap-5">
         {product?.map((each, index) => (
-          <div
+          <Link 
+            href={`/product/${each.id}`}
             key={each.id}
             className="cursor-pointer space-y-2 rounded-md px-1 py-1 shadow-sm2 shadow-gray-200"
           >
@@ -94,7 +96,7 @@ export default function HomePage() {
                 Add to Cart
               </button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       
