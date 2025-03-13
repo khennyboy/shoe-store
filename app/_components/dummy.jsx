@@ -4,16 +4,22 @@ import Pagination from "../_components/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PAGE_SIZE } from "../utils/constant";
 import { useEffect } from "react";
-import { useProducts } from "../hooks/useProduct";
 import Loader from "../loading";
 import Link from "next/link";
 
-export default function HomePage() {
+export default function Dummy() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const { products = [], isLoading, error, isError } = useProducts();
-  console.log(products);
+
+  // Fixed dummy data
+  const products = [
+    { id: 1, name: "Product One", price: 1000, discount: 10, image: ["/image-product-2.png"] },
+    { id: 2, name: "Product Two", price: 2000, discount: 15, image: ["/image-product-2.png"] },
+    { id: 3, name: "Product Three", price: 3000, discount: 20, image: ["/image-product-2.png"] },
+    { id: 4, name: "Product Four", price: 4000, discount: 25, image: ["/image-product-2.png"] },
+    { id: 5, name: "Product Five", price: 5000, discount: 30, image: ["/image-product-2.png"] },
+  ];
 
   let currentPage = Number(searchParams.get("page")) || 1;
   let pageCount = Math.ceil((products?.length || 0) / PAGE_SIZE);
@@ -32,21 +38,6 @@ export default function HomePage() {
   }, [currentPage, pageCount, router, pathname, searchParams]);
 
   const product = products?.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-
-  if (isLoading)
-    return (
-      <div className="flex h-56 items-center justify-center">
-        <Loader />
-      </div>
-    );
-
-  if (isError) {
-    return (
-      <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-        {error?.message || "An error occurred"} Products can&#39;t be loaded
-      </div>
-    );
-  }
 
   return (
     <div className="bg-gray-100 px-2 py-8 md:px-4">
@@ -100,7 +91,6 @@ export default function HomePage() {
         ))}
       </div>
       
-      {/* Ensure Pagination only renders if products exist */}
       {product?.length > 0 && <Pagination count={products.length} />}
     </div>
   );

@@ -11,8 +11,9 @@ import { GrClose, GrMenu } from "react-icons/gr";
 
 const navLinks = [
   { name: "Collections", path: "/" },
-  { name: "Men", path: "/?filter=men" },
-  { name: "Women", path: "/?filter=women" },
+  { name: "Adidas", path: "/?filter=adidas" },
+  { name: "Nike", path: "/?filter=adidas" },
+  { name: "Puma", path: "/?filter=puma" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];
