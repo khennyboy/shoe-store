@@ -1,10 +1,8 @@
 import { Kumbh_Sans } from "next/font/google";
 import "../globals.css";
-// import { Suspense } from "react";
 import Provider from "../_components/queryClient";
 import Footer from "../_components/footer";
 import Nav from "../_components/nav";
-import { Toaster } from "react-hot-toast";
 
 const kumbh = Kumbh_Sans({
   subsets: ["latin"],
@@ -24,26 +22,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <Provider>
-      <Toaster
-        position="top-center"
-        gutter={12}
-        containerStyle={{ margin: "8px" }}
-        toastOptions={{
-          success: {
-            duration: 3000,
-          },
-          error: {
-            duration: 5000,
-          },
-          style: {
-            fontSize: "16px",
-            maxWidth: "500px",
-            padding: "12px 20px",
-            backgroundColor: "hsl(26, 100%, 55%)",
-            color: "white",
-          },
-        }}
-      />
       <html lang="en">
         <body className={`${kumbh.className} `}>
           <Nav />
