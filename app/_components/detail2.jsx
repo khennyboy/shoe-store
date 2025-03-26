@@ -2,6 +2,7 @@ import Image from "next/image";
 import minus from "@/public/icon-minus.svg";
 import plus from "@/public/icon-plus.svg";
 import cart from "@/public/icon-cart.svg";
+import { IoCart } from "react-icons/io5";
 
 export default function Detail2() {
   return (
@@ -44,8 +45,8 @@ export default function Detail2() {
             <Image src={plus} alt="plus-icon" />
           </button>
         </div>
-        <button className="flex items-center justify-center gap-2 rounded-lg bg-dark-orange py-3 font-semibold text-white ring-dark-orange ring-offset-2 ring-offset-white transition-all duration-200 ease-linear hover:bg-dark-orange/80 focus:ring-1">
-          <Image src={cart} alt="cart-icon" className="" />
+        <button className="flex items-center justify-center gap-2 rounded-lg bg-dark-orange py-3 font-semibold text-white ring-dark-orange ring-offset-2 ring-offset-white transition-all duration-200 ease-linear hover:bg-dark-orange/80 focus:ring-1 cursor-pointer">
+           <IoCart className="size-7 fill-gray-300" />
           Add to cart
         </button>
       </div>

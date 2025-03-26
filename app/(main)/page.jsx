@@ -8,6 +8,7 @@ import { useProducts } from "../hooks/useProduct";
 import Loader from "../loading";
 import Dummy from "../_components/dummy";
 import AllProduct from "../_components/allProduct";
+import toast from "react-hot-toast";
 
 export default function HomePage() {
   const searchParams = useSearchParams();
@@ -18,7 +19,7 @@ export default function HomePage() {
 
   let currentPage = Number(searchParams.get("page")) || 1;
   let pageCount = Math.ceil((products?.length || 0) / PAGE_SIZE);
-
+  
   useEffect(() => {
     if (currentPage > pageCount && pageCount > 0) {
       const params = new URLSearchParams(searchParams);
@@ -32,7 +33,10 @@ export default function HomePage() {
     }
   }, [currentPage, pageCount, router, pathname, searchParams]);
 
-  const product = products?.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const product = products?.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
 
   if (isLoading)
     return (
@@ -46,17 +50,18 @@ export default function HomePage() {
       // <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
       //   {error?.message || "An error occurred"} Products can&#39;t be loaded
       // </div>
-      <div><Dummy/></div>
+      <div>
+        <Dummy />
+      </div>
     );
   }
 
   return (
     <div className="bg-gray-100 px-2 py-8 md:px-4">
-      <div className="grid gap-4 sm2:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5 xl:gap-5">
-        <AllProduct product={product}/>
+      <div className="sm2:grid-cols-2 grid gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5 xl:gap-5">
+        <AllProduct product={product} />
       </div>
-      
-      {/* Ensure Pagination only renders if products exist */}
+
       {product?.length > 0 && <Pagination count={products.length} />}
     </div>
   );

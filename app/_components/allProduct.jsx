@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { IoCart } from "react-icons/io5";
 
 export default function AllProduct({product}) {
   return (
@@ -42,14 +43,8 @@ export default function AllProduct({product}) {
           </div>
 
           <div>
-            <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold">
-              <Image
-                src="/icon-cart.svg"
-                width={30}
-                height={30}
-                alt="cart-icon"
-                className="hidden sm:block"
-              />
+            <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold cursor-pointer">
+                <IoCart className="size-7 fill-gray-300" />
               Add to Cart
             </button>
           </div>

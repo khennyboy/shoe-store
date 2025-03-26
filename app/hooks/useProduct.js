@@ -10,6 +10,7 @@ export const useProducts = () => {
   } = useQuery({
     queryKey: ["products"],
     queryFn: getProducts,
+    retry: false
   });
   return { isLoading, products, error, isError };
 };

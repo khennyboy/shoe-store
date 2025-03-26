@@ -4,26 +4,17 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Email:", email, "Password:", password);
-  };
-
+ 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
         <h2 className="mb-6 text-center text-2xl font-bold text-dark-orange">Login</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form  className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               required
               className="mt-1 w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-dark-orange focus:ring-dark-orange"
             />
@@ -33,8 +24,6 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-gray-700">Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               required
               className="mt-1 w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-dark-orange focus:ring-dark-orange"
             />
