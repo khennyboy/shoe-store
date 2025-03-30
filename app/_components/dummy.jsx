@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import Link from "next/link";
 import produt1 from "@/public/image-product-2.jpg";
 import { IoCart } from "react-icons/io5";
-import toast from "react-hot-toast";
 
 export default function Dummy() {
   const searchParams = useSearchParams();

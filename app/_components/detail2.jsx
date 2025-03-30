@@ -37,11 +37,11 @@ export default function Detail2() {
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div className="mt-4 flex items-center rounded-lg bg-gray-200 py-3 sm:mt-0">
-          <button className="px-4">
+          <button className="px-4 cursor-pointer ">
             <Image src={minus} alt="minus-icon" />
           </button>
           <span className="flex-1 text-center">23</span>
-          <button className="px-4">
+          <button className="px-4 cursor-pointer">
             <Image src={plus} alt="plus-icon" />
           </button>
         </div>

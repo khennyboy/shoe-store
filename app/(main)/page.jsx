@@ -8,7 +8,7 @@ import { useProducts } from "../hooks/useProduct";
 import Loader from "../loading";
 import Dummy from "../_components/dummy";
 import AllProduct from "../_components/allProduct";
-import toast from "react-hot-toast";
+
 
 export default function HomePage() {
   const searchParams = useSearchParams();
@@ -19,7 +19,7 @@ export default function HomePage() {
 
   let currentPage = Number(searchParams.get("page")) || 1;
   let pageCount = Math.ceil((products?.length || 0) / PAGE_SIZE);
-  
+
   useEffect(() => {
     if (currentPage > pageCount && pageCount > 0) {
       const params = new URLSearchParams(searchParams);

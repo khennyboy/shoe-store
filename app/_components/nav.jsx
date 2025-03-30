@@ -10,7 +10,6 @@ import { GrClose, GrMenu } from "react-icons/gr";
 import { SiNike } from "react-icons/si";
 import { SiPuma } from "react-icons/si";
 import { CgAdidas } from "react-icons/cg";
-import toast from "react-hot-toast";
 
 const navLinks = [
   { name: "Collections", path: "/" },
