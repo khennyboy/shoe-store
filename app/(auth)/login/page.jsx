@@ -1,64 +1,99 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
+import { LuMail } from "react-icons/lu";
+import { LuLockKeyhole } from "react-icons/lu";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { FaRegEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
-import { IoLogIn } from "react-icons/io5";
 
-export default function LoginPage() {
+export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-2">
-      <div className="w-full max-w-md rounded-lg bg-white px-2.5 py-8 shadow-lg">
-        <h2 className="text-dark-orange mb-6 text-center text-2xl font-bold">
-          Login
-        </h2>
-
-        <form className="space-y-6">
-          <div>
-            <label className="text block font-medium text-gray-700">
-              Email:
-            </label>
-            <input
-              type="email"
-              required
-              className="focus:outline-dark-orange mt-1 w-full rounded-md border-gray-400 px-1 py-4 border-1 focus:border-0 outline-0 focus:outline-2"
-            />
-          </div>
-
-          <div>
-            <label className="text block font-medium text-gray-700">
-              Password:
-            </label>
-            <input
-              type="password"
-              required
-              className="focus:outline-dark-orange mt-1 w-full rounded-md border-gray-400 px-1 py-4 border-1 focus:border-0 outline-0 focus:outline-2"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-4 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold"
-          >
-            
-            <IoLogIn className="size-8 fill-gray-100"/>
-          </button>
-        </form>
-
-        <div className="relative my-4 flex items-center justify-center">
-          <div className="absolute top-1/2 left-0 h-[1px] w-full -translate-y-1/2 bg-gray-400"></div>
-          <span className="relative bg-white px-3 text-sm">
-            or
-          </span>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="w-full max-w-sm rounded-lg bg-gray-100 px-4 py-8 shadow-md">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-bold text-orange-500">SoleMate</h1>
         </div>
 
-        <button className="text-dark-orange flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-300 bg-white py-4 text-sm font-semibold transition-all hover:bg-gray-200">
-          <FcGoogle className="size-5" />
-          Sign in with Google
+        <form>
+          <div className="relative mb-8">
+            <input
+              type="text"
+              className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-4 outline-none focus:border-2 focus:border-orange-500"
+              placeholder=" "
+            />
+            <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
+              {" "}
+              <LuMail /> Phone number / email address
+            </label>
+          </div>
+
+          <div className="relative mb-8">
+            <input
+              type={showPassword ? "text" : "password"}
+              className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-4 outline-none focus:border-2 focus:border-orange-500"
+              placeholder=" "
+            />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-3 flex cursor-pointer items-center text-gray-500"
+            >
+              {showPassword ? <MdOutlineRemoveRedEye /> : <FaRegEyeSlash />}
+            </span>
+            <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
+              <LuLockKeyhole /> Password
+            </label>
+          </div>
+
+          <p className="mb-4 text-xs text-gray-400">
+            By signing up or logging in, you consent to SoleMate's{" "}
+            <Link href="#" className="text-orange-400">
+              Terms of Use
+            </Link>{" "}
+            and{" "}
+            <Link href="#" className="text-orange-400">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+
+          <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-4 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold">
+            Log in
+          </button>
+
+          <div className="mt-4 flex justify-between text-sm text-orange-400">
+            <Link
+              href="#"
+              className="transition-all duration-200 ease-linear hover:text-orange-500"
+            >
+              Forgot password?
+            </Link>
+            <Link
+              href="/signup"
+              className="transition-all duration-200 ease-linear hover:text-orange-500"
+            >
+              Sign up
+            </Link>
+          </div>
+        </form>
+
+        <div className="my-6 flex items-center justify-center text-gray-500">
+          <span className="flex-1 border-t border-gray-700"></span>
+          <span className="mx-3 text-sm">OR</span>
+          <span className="flex-1 border-t border-gray-700"></span>
+        </div>
+
+        <button className="border-opacity-100 hover:border-opacity-0 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md border border-orange-400 py-4 text-center text-sm font-semibold text-gray-600 transition-all duration-300 ease-linear hover:shadow-md sm:py-3 lg:font-bold">
+          <FcGoogle />
+          Log in with Google
         </button>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Don&#39;t have an account?{" "}
-          <Link href="/signup" className="text-dark-orange hover:underline">
-            Sign up
+        <p className="mt-6 text-center text-xs text-gray-500">
+          © 2025 SoleMate.{" "}
+          <Link href="/contact" className="text-orange-400">
+            Contact us
           </Link>
         </p>
       </div>

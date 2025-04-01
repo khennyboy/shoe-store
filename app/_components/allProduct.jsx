@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoCart } from "react-icons/io5";
 
-export default function AllProduct({product}) {
+export default function AllProduct({ product }) {
   return (
     <>
       {product?.map((each, index) => (
@@ -43,8 +43,15 @@ export default function AllProduct({product}) {
           </div>
 
           <div>
-            <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold cursor-pointer">
-                <IoCart className="size-7 fill-gray-300" />
+            <button
+              onClick={(event) => {
+                event.preventDefault(); // Prevents the link navigation
+                event.stopPropagation(); // Stops the event from bubbling up to the <Link>
+                console.log("Added to cart"); // Replace with your add-to-cart logic
+              }}
+              className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold"
+            >
+              <IoCart className="size-7 fill-gray-300" />
               Add to Cart
             </button>
           </div>

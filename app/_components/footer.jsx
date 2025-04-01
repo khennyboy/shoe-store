@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 
 const navLinks = [
   { name: "Collections", path: "/" },
-  { name: "Adidas", path: "/?filter=adidas" },
-  { name: "Nike", path: "/?filter=adidas" },
-  { name: "Puma", path: "/?filter=puma" },
+  { name: "adidas", path: "/?filter=adidas" },
+  { name: "nike", path: "/?filter=adidas" },
+  { name: "puma", path: "/?filter=puma" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];
@@ -43,15 +43,16 @@ export default function Footer() {
                 (each.name === "Collections" &&
                   isFilter === null &&
                   each.path === pathname) ||
-                (each.name === "Men" && isFilter === "men") ||
-                (each.name === "Women" && isFilter === "women");
+                  (each.name === "adidas" && isFilter === "adidas") ||
+                  (each.name === "nike" && isFilter === "nike") ||
+                  (each.name === "puma" && isFilter === "puma");
               return (
                 <li key={index}>
                   <Link
                     href={each.path}
                     className={`transition-all duration-200 ease-linear hover:opacity-100 ${isActive ? "opacity-100" : "opacity-70"}`}
                   >
-                    {each.name}
+                    {each.name[0].toUpperCase()+each.name.slice(1)}
                   </Link>
                 </li>
               );

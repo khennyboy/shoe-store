@@ -13,9 +13,9 @@ import { CgAdidas } from "react-icons/cg";
 
 const navLinks = [
   { name: "Collections", path: "/" },
-  { name: "Adidas", path: "/?filter=adidas", icon: <CgAdidas /> },
-  { name: "Nike", path: "/?filter=nike", icon: <SiNike /> },
-  { name: "Puma", path: "/?filter=puma", icon: <SiPuma /> },
+  { name: "adidas", path: "/?filter=adidas", icon: <CgAdidas /> },
+  { name: "nike", path: "/?filter=nike", icon: <SiNike /> },
+  { name: "puma", path: "/?filter=puma", icon: <SiPuma /> },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];
@@ -75,8 +75,9 @@ export default function Nav() {
             (each.name === "Collections" &&
               isFilter === null &&
               each.path === pathname) ||
-            (each.name === "Men" && isFilter === "men") ||
-            (each.name === "Women" && isFilter === "women");
+            (each.name === "adidas" && isFilter === "adidas") ||
+            (each.name === "nike" && isFilter === "nike") ||
+            (each.name === "puma" && isFilter === "puma");
           return (
             <div
               className={`relative border-b-2 py-2 text-start font-medium text-white md:w-fit md:border-b-0 md:py-5 md:text-black lg:py-6 ${isActive ? "border-b-white/80" : "border-b-white/20"}`}
@@ -91,7 +92,7 @@ export default function Nav() {
                   }
                 }}
               >
-                <span>{each.name}</span>{" "}
+                <span>{each.name[0].toUpperCase() + each.name.slice(1)}</span>{" "}
                 <span className="ml-1 hidden align-middle max-md:inline-block lg:inline-block">
                   {each.icon || ""}
                 </span>

@@ -10,6 +10,7 @@
     --color-light-grayish-blue: hsl(223, 64%, 98%);
     --color-black: hsl(0, 0%, 0%);
     --breakpoint-sm2: 320px;
+    --text-eb: 1.05rem;
     @keyframes zoom {
       from {
         transform: scale(0);
@@ -53,4 +54,9 @@
   to {
     transform: rotate(1turn);
   }
+}
+
+input:not(:placeholder-shown) ~ label {
+  @apply 
+    hidden
 }
