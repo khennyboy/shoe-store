@@ -25,7 +25,7 @@ const SignUpPage = () => {
           <div className="relative mb-8">
             <input
               type="text"
-              className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-4 outline-none focus:border-2 focus:border-orange-500"
+              className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
             />
             <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
@@ -37,7 +37,7 @@ const SignUpPage = () => {
           <div className="relative mb-8">
             <input
               type={showPassword.password ? "text" : "password"}
-              className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-4 outline-none focus:border-2 focus:border-orange-500"
+              className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
             />
             <span
@@ -63,7 +63,7 @@ const SignUpPage = () => {
           <div className="relative mb-8">
             <input
               type={showPassword.confirmPassword ? "text" : "password"}
-              className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-4 outline-none focus:border-2 focus:border-orange-500"
+              className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
             />
             <span
@@ -91,7 +91,7 @@ const SignUpPage = () => {
             <div className="relative flex-1">
               <input
                 type="text"
-                className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-4 outline-none focus:border-2 focus:border-orange-500"
+                className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
                 placeholder=" "
               />
               <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
@@ -101,7 +101,7 @@ const SignUpPage = () => {
             </div>
             <button
               type="button"
-              className="border-opacity-100 hover:border-opacity-0 cursor-pointer rounded-md border border-orange-400 px-4 py-4 text-center text-sm text-gray-800 transition-all duration-300 ease-linear hover:shadow-md lg:px-8 lg:text-base"
+              className="border-opacity-100 hover:border-opacity-0 cursor-pointer rounded-md border border-orange-400 px-4 py-3 text-center text-sm text-gray-800 transition-all duration-300 ease-linear hover:shadow-md lg:px-8 lg:text-base"
             >
               Send Code
             </button>
@@ -121,7 +121,7 @@ const SignUpPage = () => {
 
           <button
             type="submit"
-            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-4 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 lg:font-bold"
+            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 lg:font-bold"
           >
             Sign up
           </button>
