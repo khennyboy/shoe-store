@@ -1,19 +1,43 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LuMail } from "react-icons/lu";
 import { LuLockKeyhole } from "react-icons/lu";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { useForm } from "react-hook-form";
+import useCode from "@/app/hooks/handleCode";
+import { toast } from "react-toastify";
+import { handleSendCode } from "@/app/_lib/send-code";
+
 
 const SignUpPage = () => {
+  
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
   });
+  const [btn, setBtn] = useState(true);
+  const { register, handleSubmit, formState, reset, getValues } = useForm();
+  let { errors } = formState;
 
-  console.log(showPassword.password, "password");
-  console.log(showPassword.confirmPassword, "confirmPassword");
+
+  function onSubmit(data) {
+    console.log(data);
+  }
+
+  const {sendCode, isLoading, error, isError, isSuccess } = useCode();
+  console.log(isSuccess, isError,'isError')
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.message);
+    }
+    if(isSuccess && !isLoading){
+      toast.success('OTP sent sucessfully')
+      setBtn(false)
+    }
+  }, [isError, error, isSuccess]);
+
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="mt-8 w-full max-w-lg rounded-lg bg-gray-100 px-4 py-8 shadow-md md:px-8">
@@ -21,10 +45,17 @@ const SignUpPage = () => {
           <h1 className="text-2xl font-bold text-orange-500">SoleMate</h1>
         </div>
 
-        <form className="">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="relative mb-8">
             <input
-              type="text"
+              {...register("email", {
+                required: "This field is required",
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: "Please provide a valid email address",
+                },
+              })}
+              type="email"
               className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
             />
@@ -36,6 +67,9 @@ const SignUpPage = () => {
 
           <div className="relative mb-8">
             <input
+              {...register("password", {
+                required: "This field is required",
+              })}
               type={showPassword.password ? "text" : "password"}
               className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
@@ -62,6 +96,11 @@ const SignUpPage = () => {
 
           <div className="relative mb-8">
             <input
+              {...register("confirmPassword", {
+                required: "This field is required",
+                validate: (value) =>
+                  value === getValues().password || "Password need to match",
+              })}
               type={showPassword.confirmPassword ? "text" : "password"}
               className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
@@ -100,10 +139,11 @@ const SignUpPage = () => {
               </label>
             </div>
             <button
+              onClick={()=>handleSendCode(getValues().email, sendCode)}
               type="button"
               className="border-opacity-100 hover:border-opacity-0 cursor-pointer rounded-md border border-orange-400 px-4 py-3 text-center text-sm text-gray-800 transition-all duration-300 ease-linear hover:shadow-md lg:px-8 lg:text-base"
             >
-              Send Code
+              {isLoading ? "Sending..." : "Send Code"}
             </button>
           </div>
 
@@ -121,9 +161,10 @@ const SignUpPage = () => {
 
           <button
             type="submit"
-            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 lg:font-bold"
+            disabled={btn}
+            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed lg:font-bold"
           >
-            Sign up
+            SIgn Up
           </button>
         </form>
 

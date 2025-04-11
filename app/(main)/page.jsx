@@ -1,10 +1,9 @@
 "use client";
-import Image from "next/image";
 import Pagination from "../_components/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PAGE_SIZE } from "../utils/constant";
 import { useEffect } from "react";
-import { useProducts } from "../hooks/useProduct";
+import { useProducts } from "../hooks/handleProduct";
 import Loader from "../loading";
 import Dummy from "../_components/dummy";
 import AllProduct from "../_components/allProduct";

@@ -6,10 +6,15 @@ import { LuLockKeyhole } from "react-icons/lu";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const { register, handleSubmit, formstate, reset } = useForm();
 
+  function onSubmit(data) {
+    console.log(data);
+  }
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-lg rounded-lg bg-gray-100 px-4 py-8 shadow-md md:px-8">
@@ -17,9 +22,12 @@ export default function Login() {
           <h1 className="text-2xl font-bold text-orange-500">SoleMate</h1>
         </div>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="relative mb-8">
             <input
+              {...register("email", {
+                required: "This field is required",
+              })}
               type="text"
               className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
@@ -32,13 +40,16 @@ export default function Login() {
 
           <div className="relative mb-8">
             <input
+              {...register("password", {
+                required: "This field is required",
+              })}
               type={showPassword ? "text" : "password"}
               className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
-              className="px-2 absolute inset-y-0 right-3 flex cursor-pointer items-center text-gray-500"
+              className="absolute inset-y-0 right-3 flex cursor-pointer items-center px-2 text-gray-500"
             >
               {showPassword ? <MdOutlineRemoveRedEye /> : <FaRegEyeSlash />}
             </span>
@@ -59,7 +70,7 @@ export default function Login() {
             .
           </p>
 
-          <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80  w-full cursor-pointer  rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold">
+          <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold">
             Log in
           </button>
 
@@ -71,7 +82,7 @@ export default function Login() {
               Forgot password?
             </Link>
             <Link
-              href="/signup"
+              href="/auth/signup"
               className="transition-all duration-200 ease-linear hover:text-orange-500"
             >
               Sign up
@@ -85,8 +96,8 @@ export default function Login() {
           <span className="flex-1 border-t border-gray-700"></span>
         </div>
 
-        <button className="border-opacity-100 hover:border-opacity-0 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md border border-orange-400 py-3 text-center text-sm font-medium text-gray-800 transition-all duration-300 ease-linear hover:shadow-md  ">
-          <FcGoogle className="size-5"/>
+        <button className="border-opacity-100 hover:border-opacity-0 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md border border-orange-400 py-3 text-center text-sm font-medium text-gray-800 transition-all duration-300 ease-linear hover:shadow-md">
+          <FcGoogle className="size-5" />
           Log in with Google
         </button>
 
