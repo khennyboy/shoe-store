@@ -7,11 +7,13 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
+import Error from "@/app/_components/error";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, formstate, reset } = useForm();
+  const { register, handleSubmit, formState, reset } = useForm();
 
+  const { errors } = formState;
   function onSubmit(data) {
     console.log(data);
   }
@@ -22,40 +24,46 @@ export default function Login() {
           <h1 className="text-2xl font-bold text-orange-500">SoleMate</h1>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="relative mb-8">
-            <input
-              {...register("email", {
-                required: "This field is required",
-              })}
-              type="text"
-              className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
-              placeholder=" "
-            />
-            <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
-              {" "}
-              <LuMail /> Phone number / email address
-            </label>
+        <form onSubmit={handleSubmit(onSubmit)} method="post">
+          <div className="mb-6">
+            <div className="relative">
+              <input
+                {...register("email", {
+                  required: "This field is required",
+                })}
+                type="text"
+                className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
+                placeholder=" "
+              />
+              <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
+                {" "}
+                <LuMail /> Phone number / email address
+              </label>
+            </div>
+            <Error error={errors?.email?.message} />
           </div>
 
-          <div className="relative mb-8">
-            <input
-              {...register("password", {
-                required: "This field is required",
-              })}
-              type={showPassword ? "text" : "password"}
-              className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
-              placeholder=" "
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-3 flex cursor-pointer items-center px-2 text-gray-500"
-            >
-              {showPassword ? <MdOutlineRemoveRedEye /> : <FaRegEyeSlash />}
-            </span>
-            <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
-              <LuLockKeyhole /> Password
-            </label>
+          <div className="mb-6">
+            <div className="relative">
+              <input
+                {...register("password", {
+                  required: "This field is required",
+                })}
+                type={showPassword ? "text" : "password"}
+                className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
+                placeholder=" "
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex cursor-pointer items-center px-2 text-gray-500"
+              >
+                {showPassword ? <MdOutlineRemoveRedEye /> : <FaRegEyeSlash />}
+              </span>
+              <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
+                <LuLockKeyhole /> Password
+              </label>
+            </div>
+            <Error error={errors?.password?.message} />
           </div>
 
           <p className="mb-8 text-sm text-gray-400">

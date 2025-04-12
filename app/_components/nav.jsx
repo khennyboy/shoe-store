@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback,  useRef, useState } from "react";
 import Cart from "./cart";
 import Login from "./login";
 import useNav from "../hooks/navhooks";
