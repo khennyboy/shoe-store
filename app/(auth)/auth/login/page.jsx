@@ -31,7 +31,6 @@ export default function Login() {
   const { errors } = formState;
 
   function onSubmit(data) {
-    console.log(data);
     login(data);
   }
   useEffect(() => {
