@@ -11,10 +11,10 @@ import { toast } from "react-toastify";
 import { handleSendCode } from "@/app/_lib/send-code";
 import Error from "@/app/_components/error";
 import useSignup from "@/app/hooks/handleSignup";
-import { redirect } from "next/navigation";
-import supabase from "@/app/_lib/supabase";
+import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
@@ -32,18 +32,7 @@ const SignUpPage = () => {
     console.log(data);
   }
 
-  useEffect(() => {
-    const signup = async () => {
-      let { data, error } = await supabase.auth.signUp({
-        email: "someone@email.com",
-        password: "ZLfEqZiNuEyPCiGRtlKq",
-      });
-      console.log(data, error);
-    };
-  
-    signup();
-  }, []);
-  
+
   useEffect(() => {
     if (isError) {
       toast.error("Error generating OTP!");
@@ -62,7 +51,7 @@ const SignUpPage = () => {
     if (signupisSuccess) {
       toast.success("Sign up successful");
       reset();
-      redirect("/auth/login");
+      router.push("/auth/login");
     }
   }, [signupisError, signupisSuccess]);
 

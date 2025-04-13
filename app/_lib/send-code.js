@@ -9,18 +9,19 @@ export async function sendOtpEmail(email) {
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data?.error || "Error generating OTP");
+    console.log(data);
+    if (!res.ok) throw new Error("Error generating OTP");
     return data;
   } catch (err) {
+    console.log(err);
     throw err;
   }
 }
 
-
 export const handleSendCode = (email, sendCode) => {
-    if (!/\S+@\S+\.\S+/.test(email) ) {
-      toast.error("Please enter a valid email");
-      return;
-    }
-    sendCode(email); 
-  };
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    toast.error("Please enter a valid email");
+    return;
+  }
+  sendCode(email);
+};
