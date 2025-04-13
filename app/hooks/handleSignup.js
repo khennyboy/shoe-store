@@ -9,7 +9,7 @@ export default function useSignup() {
       isError:signupisError,
       isSuccess:signupisSuccess
     } = useMutation({
-      mutationFn: ({otp, email, password})=>signupUser(otp, email, password),
+      mutationFn: signupUser,
       retry: false,
     });
     

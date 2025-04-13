@@ -4,13 +4,14 @@ import supabase from "./supabase";
 
 export async function getProducts() {
   let { data, error } = await supabase.from("products").select("*");
+  console.log(data)
   if (error) {
     throw new Error(`${error.message}`);
   }
   return data;
 }
 
-export async function signupUser(otp, email, password) {
+export async function signupUser({otp, email, password}) {
   console.log(email, password)
   try {
     await verifyOTP(otp, email);

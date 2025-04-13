@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { NextResponse } from 'next/server'
 import supabase from "@/app/_lib/supabase";
 const resend = new Resend(
-  "re_gebdo1fk_HgSMzjpz7K1DhN9xzJbhhu8h",
+  process.env.NEXT_PUBLIC_RESEND_KEY,
 );
 export async function POST(request) {
   console.log(request);

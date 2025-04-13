@@ -15,7 +15,7 @@ export default function AllProduct({ product }) {
             <div className="relative h-[90%]">
               <Image
                 quality={70}
-                src={each.image?.[0] || "/placeholder.png"}
+                src={each.image[0]}
                 alt="product-image"
                 fill
                 loading="lazy"
