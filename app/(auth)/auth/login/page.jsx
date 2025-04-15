@@ -40,7 +40,7 @@ export default function Login() {
     if (isSuccessGoogle) {
       toast.success("Login Successful");
       reset()
-      router.push("/");
+      // router.push("/");
     }
   }, [isErrorGoogle, errorGoogle, isSuccessGoogle]);
 

@@ -77,6 +77,7 @@ export async function loginUser({ email, password }) {
   }
 }
 
+
 export async function signInWithGoogle() {
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
