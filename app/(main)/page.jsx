@@ -14,7 +14,7 @@ export default function HomePage() {
   const pathname = usePathname();
   const router = useRouter();
   const { products = [], isLoading, error, isError } = useProducts();
-  console.log(products);
+ 
 
   let currentPage = Number(searchParams.get("page")) || 1;
   let pageCount = Math.ceil((products?.length || 0) / PAGE_SIZE);

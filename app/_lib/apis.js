@@ -80,9 +80,13 @@ export async function loginUser({ email, password }) {
 
 
 export async function signInWithGoogle() {
+  const origin = (await headers()).get("origin");
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options:{
+        redirectTo: `${origin}/auth/callback`
+      }
     });
 
     if (error) throw new Error(error.message);
