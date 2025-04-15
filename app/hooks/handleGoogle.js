@@ -7,10 +7,10 @@ export default function useGoogle() {
       isPending: isLoadingGoogle,
       error:errorGoogle,
       isError:isErrorGoogle,
-      isSuccess:isSuccessGoogle
+      isSuccess:isSuccessGoogle,
     } = useMutation({
       mutationFn: signInWithGoogle,
-      retry: false,
+      retry :false,
     });
     
     return {loginGoogle, isLoadingGoogle, errorGoogle, isErrorGoogle, isSuccessGoogle };

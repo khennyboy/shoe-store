@@ -13,10 +13,10 @@ import { redirect } from "next/dist/server/api-utils";
 import useGoogle from "@/app/hooks/handleGoogle";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-
+import supabase from "@/app/_lib/supabase";
 
 export default function Login() {
-  const router = useRouter()
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState, reset } = useForm();
   const { login, isLoading, error, isError, isSuccess } = useLogin();
@@ -33,24 +33,34 @@ export default function Login() {
   function onSubmit(data) {
     login(data);
   }
+
+  // useEffect for handling login with google
   useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_IN") {
+          toast.success("Login successful!");
+          reset();
+          // router.push("/")
+        }
+      },
+    );
     if (isErrorGoogle) {
       toast.error(errorGoogle.message);
     }
-    if (isSuccessGoogle) {
-      toast.success("Login Successful");
-      reset()
-      // router.push("/");
-    }
-  }, [isErrorGoogle, errorGoogle, isSuccessGoogle]);
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [errorGoogle]);
 
+  // useEffect for handling logub button
   useEffect(() => {
     if (isError) {
       toast.error(error.message);
     }
     if (isSuccess) {
       toast.success("Login Successful");
-      redirect("");
+      router.push("/");
     }
   }, [isError, error, isSuccess]);
 
