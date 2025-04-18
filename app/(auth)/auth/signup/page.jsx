@@ -195,7 +195,7 @@ const SignUpPage = () => {
 
           <button
             type="submit"
-            // disabled={btn || signupLoading}
+            disabled={btn || signupLoading}
             className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed lg:font-bold"
           >
             {signupLoading ? "Signing Up..." : "SIgn Up"}

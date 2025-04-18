@@ -79,13 +79,27 @@ export async function loginUser({ email, password }) {
 }
 
 
+export async function logoutUser() {
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw new Error(error.message);
+
+    console.log("User signed out successfully");
+    return true;
+  } catch (error) {
+    console.error("Logout error:", error.message);
+    throw new Error(error.message);
+  }
+}
+
+
 export async function signInWithGoogle() {
-  const origin = (await headers()).get("origin");
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options:{
-        redirectTo: `${origin}/auth/callback`
+        redirectTo: 'http://localhost:3000'
       }
     });
 
@@ -95,5 +109,18 @@ export async function signInWithGoogle() {
   } catch (error) {
     console.error("Google Sign-in Error:", error.message);
     throw new Error(error.message);
+  }
+}
+
+
+export async function getSession (){
+  try {
+    const {
+      data,
+      error
+    } = await supabase.auth.getSession();
+    return data
+  } catch (error) {
+    throw new Error(error.message)
   }
 }

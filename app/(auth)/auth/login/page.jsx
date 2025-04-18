@@ -8,61 +8,48 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
 import Error from "@/app/_components/error";
-import useLogin from "@/app/hooks/handleLogin";
+import useLogin from "@/app/hooks/handleLoginLogout";
 import { redirect } from "next/dist/server/api-utils";
 import useGoogle from "@/app/hooks/handleGoogle";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import supabase from "@/app/_lib/supabase";
+import useLoginLogout from "@/app/hooks/handleLoginLogout";
 
 export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState, reset } = useForm();
-  const { login, isLoading, error, isError, isSuccess } = useLogin();
+  const {
+    login,
+    isLoggingIn,
+    loginError,
+    isLoginError,
+    isLoginSuccess,
+  } = useLoginLogout();
+
   const {
     loginGoogle,
-    isLoadingGoogle,
-    errorGoogle,
-    isErrorGoogle,
-    isSuccessGoogle,
   } = useGoogle();
 
   const { errors } = formState;
-
+  
   function onSubmit(data) {
     login(data);
   }
 
-  // useEffect for handling login with google
+  // useEffect for handling login button
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === "SIGNED_IN") {
-          toast.success("Login successful!");
-          reset();
-          // router.push("/")
-        }
-      },
-    );
-    if (isErrorGoogle) {
-      toast.error(errorGoogle.message);
+    if (isLoginError) {
+      toast.error(loginError.message);
     }
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, [errorGoogle]);
-
-  // useEffect for handling logub button
-  useEffect(() => {
-    if (isError) {
-      toast.error(error.message);
-    }
-    if (isSuccess) {
+    if (isLoginSuccess) {
       toast.success("Login Successful");
+      reset()
       router.push("/");
     }
-  }, [isError, error, isSuccess]);
+    
+  }, [loginError, isLoginError, isLoginSuccess]);
+
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -126,10 +113,11 @@ export default function Login() {
           </p>
 
           <button
-            disabled={isLoading}
+            type="submit"
+            disabled={isLoggingIn}
             className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold"
           >
-            Log in
+            Sign in
           </button>
 
           <div className="mt-4 flex justify-between text-sm text-orange-400">
@@ -155,7 +143,6 @@ export default function Login() {
         </div>
 
         <button
-          disabled={isLoadingGoogle}
           onClick={() => loginGoogle()}
           className="border-opacity-100 hover:border-opacity-0 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md border border-orange-400 py-3 text-center text-sm font-medium text-gray-800 transition-all duration-300 ease-linear hover:shadow-md"
         >

@@ -3,13 +3,14 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback,  useRef, useState } from "react";
 import Cart from "./cart";
-import Login from "./login";
+import Login from "./loginlogout";
 import useNav from "../hooks/navhooks";
 import Profile from "./profile";
 import { GrClose, GrMenu } from "react-icons/gr";
 import { SiNike } from "react-icons/si";
 import { SiPuma } from "react-icons/si";
 import { CgAdidas } from "react-icons/cg";
+
 
 const navLinks = [
   { name: "Collections", path: "/" },
