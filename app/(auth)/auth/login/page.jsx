@@ -8,8 +8,6 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
 import Error from "@/app/_components/error";
-import useLogin from "@/app/hooks/handleLoginLogout";
-import { redirect } from "next/dist/server/api-utils";
 import useGoogle from "@/app/hooks/handleGoogle";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -29,14 +27,16 @@ export default function Login() {
 
   const {
     loginGoogle,
+    isSuccessGoogle
   } = useGoogle();
 
   const { errors } = formState;
-  
+
   function onSubmit(data) {
     login(data);
   }
 
+ 
   // useEffect for handling login button
   useEffect(() => {
     if (isLoginError) {
