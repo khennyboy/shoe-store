@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { IoLogInOutline, IoLogOutOutline } from "react-icons/io5";
-import { useSession } from "../hooks/handleSession";
+import { useUser } from "../hooks/handleUser";
 import useLoginLogout from "../hooks/handleLoginLogout";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 export default function Login() {
-  const { session } = useSession();
-  console.log(session, 'session');
+  const { user } = useUser();
+  console.log(user, "user");
   const { logout, isLoggingOut, logoutError, isLogoutError, isLogoutSuccess } =
     useLoginLogout();
   useEffect(() => {
@@ -22,9 +22,14 @@ export default function Login() {
   }, [isLogoutError, isLogoutSuccess, logoutError]);
   return (
     <>
-      {session ? (
-        <button disabled={isLoggingOut} onClick={() => logout()}>
-          <IoLogOutOutline className="size-7 stroke-orange-500 cursor-pointer" />
+      {user ? (
+        <button
+          disabled={isLoggingOut}
+          onClick={() => logout()}
+          title="logout"
+          className="cursor-pointer"
+        >
+          <IoLogOutOutline className="size-7 stroke-orange-500" />
         </button>
       ) : (
         <Link href="/auth/login">

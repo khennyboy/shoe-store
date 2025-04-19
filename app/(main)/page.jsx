@@ -7,12 +7,12 @@ import { useProducts } from "../hooks/handleProduct";
 import Loader from "../loading";
 import Dummy from "../_components/dummy";
 import AllProduct from "../_components/allProduct";
-import { useSession } from "../hooks/handleSession";
+import {  useUser } from "../hooks/handleUser";
 
 export default function HomePage() {
-  const { session } = useSession();
-  console.log(session, "session");
-
+  const { user } = useUser();
+  console.log(user, "user");
+  
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();

@@ -113,14 +113,17 @@ export async function signInWithGoogle() {
 }
 
 
-export async function getSession (){
+export async function getCurrentUser() {
   try {
-    const {
-      data,
-      error
-    } = await supabase.auth.getSession();
-    return data
+    const { data: session } = await supabase.auth.getSession();
+    if (!session.session) return null;
+
+    const { data, error } = await supabase.auth.getUser();
+    if (error) throw new Error(error.message);
+
+    return data;
   } catch (error) {
-    throw new Error(error.message)
+    console.error("Get User Error:", error.message);
+    throw new Error(error.message);
   }
 }
