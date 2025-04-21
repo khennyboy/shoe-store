@@ -14,7 +14,7 @@ export default function Login() {
     useLoginLogout();
   useEffect(() => {
     if (isLogoutSuccess) {
-      toast.success("Logout Successful");
+      toast.success("Logout Successful!");
     }
     if (isLogoutError) {
       toast.error(logoutError.message);

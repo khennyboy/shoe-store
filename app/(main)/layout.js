@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
         <body className={`${kumbh.className} `} >
           <ToastContainer />
           <Nav />
-          <div className="mt-28 mb-16 px-4 md:mt-32 md:mb-[5rem] md:px-8 lg:mt-36 xl:px-12">
+          <div className="mt-24 mb-16 px-4 md:mt-32 md:mb-[5rem] md:px-8 lg:mt-36 xl:px-12">
             {children}
           </div>
 

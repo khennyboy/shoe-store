@@ -8,7 +8,6 @@ export async function getProducts() {
   return data;
 }
 
-
 export async function signupUser({ otp, email, password }) {
   console.log(email, password);
   try {
@@ -62,56 +61,45 @@ async function verifyOTP(otp, email) {
   return true;
 }
 
-
 export async function loginUser({ email, password }) {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    console.log(data);
     if (error) throw new Error(error.message);
     return data;
   } catch (error) {
-    console.error("Login error:", error.message);
     throw new Error(error.message);
   }
 }
-
 
 export async function logoutUser() {
   try {
     const { error } = await supabase.auth.signOut();
 
     if (error) throw new Error(error.message);
-
-    console.log("User signed out successfully");
     return true;
   } catch (error) {
-    console.error("Logout error:", error.message);
     throw new Error(error.message);
   }
 }
-
 
 export async function signInWithGoogle() {
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options:{
-        redirectTo: 'https://shoe-store-ashy-two.vercel.app/'
-      }
+      options: {
+        redirectTo: `${window.location.origin}/?loggedIn=true`,
+      },
     });
 
     if (error) throw new Error(error.message);
-    console.log(data, "google");
     return data;
   } catch (error) {
-    console.error("Google Sign-in Error:", error.message);
     throw new Error(error.message);
   }
 }
-
 
 export async function getCurrentUser() {
   try {
@@ -123,7 +111,6 @@ export async function getCurrentUser() {
 
     return data;
   } catch (error) {
-    console.error("Get User Error:", error.message);
     throw new Error(error.message);
   }
 }

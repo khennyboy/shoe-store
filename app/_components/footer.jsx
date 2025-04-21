@@ -2,12 +2,14 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CgAdidas } from "react-icons/cg";
+import { SiNike, SiPuma } from "react-icons/si";
 
 const navLinks = [
   { name: "Collections", path: "/" },
-  { name: "adidas", path: "/?filter=adidas" },
-  { name: "nike", path: "/?filter=adidas" },
-  { name: "puma", path: "/?filter=puma" },
+  { name: "adidas", path: "/?filter=adidas", icon: <CgAdidas /> },
+  { name: "nike", path: "/?filter=nike", icon: <SiNike /> },
+  { name: "puma", path: "/?filter=puma", icon: <SiPuma /> },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];
@@ -43,16 +45,21 @@ export default function Footer() {
                 (each.name === "Collections" &&
                   isFilter === null &&
                   each.path === pathname) ||
-                  (each.name === "adidas" && isFilter === "adidas") ||
-                  (each.name === "nike" && isFilter === "nike") ||
-                  (each.name === "puma" && isFilter === "puma");
+                (each.name === "adidas" && isFilter === "adidas") ||
+                (each.name === "nike" && isFilter === "nike") ||
+                (each.name === "puma" && isFilter === "puma");
               return (
                 <li key={index}>
                   <Link
                     href={each.path}
                     className={`transition-all duration-200 ease-linear hover:opacity-100 ${isActive ? "opacity-100" : "opacity-70"}`}
                   >
-                    {each.name[0].toUpperCase()+each.name.slice(1)}
+                    <span>
+                      {each.name[0].toUpperCase() + each.name.slice(1)}
+                    </span>{" "}
+                    <span className="ml-1 inline-block align-middle">
+                      {each.icon || ""}
+                    </span>
                   </Link>
                 </li>
               );
