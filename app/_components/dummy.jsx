@@ -50,7 +50,7 @@ export default function Dummy() {
           <Link
             href={`/product/${each.id}`}
             key={each.id}
-            className="shadow-sm2 cursor-pointer space-y-2 rounded-md px-1 py-1 shadow-gray-200"
+            className="shadow-sm2 group/link cursor-pointer space-y-2 rounded-md px-1 py-1 shadow-gray-200"
           >
             <div className="grid h-52 items-center">
               <div className="relative h-[90%]">
@@ -83,18 +83,10 @@ export default function Dummy() {
               </div>
             </div>
 
-            <div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  console.log("hello");
-                }}
-                className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold"
-              >
-                <IoCart className="size-7 fill-gray-300" />
-                Add to Cart
-              </button>
-            </div>
+            <button className="group-hover/link:visible invisible  bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold">
+              <IoCart className="size-7 fill-gray-300" />
+              Add to Cart
+            </button>
           </Link>
         ))}
       </div>

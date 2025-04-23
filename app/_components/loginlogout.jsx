@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 
 export default function Login() {
   const { user } = useUser();
-  console.log(user, "user");
   const { logout, isLoggingOut, logoutError, isLogoutError, isLogoutSuccess } =
     useLoginLogout();
   useEffect(() => {

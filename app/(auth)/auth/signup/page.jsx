@@ -29,7 +29,6 @@ const SignUpPage = () => {
 
   function onSubmit(data) {
     signup(data);
-    console.log(data);
   }
 
 
@@ -45,7 +44,6 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (signupisError) {
-      console.log(signupError);
       toast.error(signupError.message);
     }
     if (signupisSuccess) {

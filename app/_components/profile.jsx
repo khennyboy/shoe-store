@@ -7,9 +7,7 @@ import { useUser } from "../hooks/handleUser";
 
 export default function Profile() {
   const { user } = useUser();
-  console.log(user?.user?.user_metadata?.avatar_url, 'helo')
   const userImage = user?.user?.user_metadata?.avatar_url || avatar;
-  
   return (
     <Link href='/profile' className="flex-[0_0_2.6rem] max-sm:flex-[0_0_2.2rem] cursor-pointer">
       <Image 

@@ -9,7 +9,7 @@ export default function AllProduct({ product }) {
         <Link
           href={`/product/${each.id}`}
           key={each.id}
-          className="shadow-sm2 cursor-pointer space-y-2 rounded-md px-1 py-1 shadow-gray-200"
+          className="group shadow-sm2 cursor-pointer space-y-2 rounded-md px-1 py-1 shadow-gray-200"
         >
           <div className="grid h-52 items-center">
             <div className="relative h-[90%]">
@@ -42,19 +42,10 @@ export default function AllProduct({ product }) {
             </div>
           </div>
 
-          <div>
-            <button
-              onClick={(event) => {
-                event.preventDefault(); // Prevents the link navigation
-                event.stopPropagation(); // Stops the event from bubbling up to the <Link>
-                console.log("Added to cart"); // Replace with your add-to-cart logic
-              }}
-              className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold"
-            >
-              <IoCart className="size-7 fill-gray-300" />
-              Add to Cart
-            </button>
-          </div>
+          <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 visible flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-medium text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear group-hover:visible focus:ring-1 sm:py-3 lg:font-semibold">
+            <IoCart className="size-7 fill-gray-300" />
+            Add to Cart
+          </button>
         </Link>
       ))}
     </>

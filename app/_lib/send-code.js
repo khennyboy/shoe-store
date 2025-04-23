@@ -9,12 +9,10 @@ export async function sendOtpEmail(email) {
     });
 
     const data = await res.json();
-    console.log(data);
     if (!res.ok) throw new Error("Error generating OTP");
     return data;
   } catch (err) {
-    console.log(err);
-    throw err;
+    throw new Error(err.message);
   }
 }
 
@@ -23,5 +21,5 @@ export const handleSendCode = (email, sendCode) => {
     toast.error("Please enter a valid email");
     return;
   }
-  sendCode(email);
+  sendOtpEmail(email);
 };

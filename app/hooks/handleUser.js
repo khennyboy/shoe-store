@@ -3,7 +3,7 @@ import { getCurrentUser } from "../_lib/apis";
 
 export const useUser = () => {
   const { data: user } = useQuery({
-    queryKey: ["session"],
+    queryKey: ["user"],
     queryFn: getCurrentUser,
     retry: false,
   });

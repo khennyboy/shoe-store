@@ -6,7 +6,6 @@ const resend = new Resend(
   process.env.NEXT_PUBLIC_RESEND_KEY,
 );
 export async function POST(request) {
-  console.log(request);
   try {
     const { email } = await request.json();
     // genarate the OTP and send to the user email and then save it to the database

@@ -7,31 +7,33 @@ import { useProducts } from "../hooks/handleProduct";
 import Loader from "../loading";
 import Dummy from "../_components/dummy";
 import AllProduct from "../_components/allProduct";
-import {  useUser } from "../hooks/handleUser";
+import { useUser } from "../hooks/handleUser";
 import { toast } from "react-toastify";
 
 export default function HomePage() {
-  const router = useRouter()
+  const { user } = useUser();
+  console.log(user);
+
+  const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
+  const { products = [], isLoading, isError } = useProducts();
+
+  let currentPage = Number(searchParams.get("page")) || 1;
+  let pageCount = Math.ceil((products?.length || 0) / PAGE_SIZE);
+  
   useEffect(() => {
     const loggedIn = searchParams.get("loggedIn");
-  
+
     if (loggedIn === "true") {
       toast.success("Login successful!");
-  
+
       const params = new URLSearchParams(searchParams);
       params.delete("loggedIn");
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }
   }, [searchParams, pathname, router]);
-  
-  
-  const { products = [], isLoading, isError } = useProducts();
-
-  let currentPage = Number(searchParams.get("page")) || 1;
-  let pageCount = Math.ceil((products?.length || 0) / PAGE_SIZE);
 
   useEffect(() => {
     if (currentPage > pageCount && pageCount > 0) {
