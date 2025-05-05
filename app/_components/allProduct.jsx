@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IoCart } from "react-icons/io5";
+import useHandleCart from "../hooks/handleCart";
+import { useRef } from "react";
 
 export default function AllProduct({ product }) {
+  const cartRef = useRef(null);
+  useHandleCart(cartRef);
   return (
     <>
       {product?.map((each, index) => (
@@ -36,13 +40,16 @@ export default function AllProduct({ product }) {
               <span className="text-sm line-through opacity-60">
                 ₦{each.price}
               </span>
-              <span className="bg-PaleOrange text-dark-orange px-[6px] py-[2px] text-sm">
+              <span className="bg-pale-orange text-dark-orange px-[6px] py-[2px] text-sm">
                 -{each.discount}%
               </span>
             </div>
           </div>
 
-          <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 visible flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-medium text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear group-hover:visible focus:ring-1 sm:py-3 lg:font-semibold">
+          <button
+            ref={cartRef}
+            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 visible flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-2 text-center text-sm font-medium text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear group-hover:visible focus:ring-1 sm:py-3"
+          >
             <IoCart className="size-7 fill-gray-300" />
             Add to Cart
           </button>

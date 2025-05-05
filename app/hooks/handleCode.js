@@ -1,4 +1,4 @@
-
+'use client'
 import { sendOtpEmail } from "../_lib/send-code";
 import { useMutation} from "@tanstack/react-query";
 

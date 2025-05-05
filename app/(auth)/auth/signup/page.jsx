@@ -14,12 +14,13 @@ import useSignup from "@/app/hooks/handleSignup";
 import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
   });
   const [btn, setBtn] = useState(true);
+
   const { register, handleSubmit, formState, reset, getValues } = useForm();
   let { errors } = formState;
 
@@ -30,7 +31,6 @@ const SignUpPage = () => {
   function onSubmit(data) {
     signup(data);
   }
-
 
   useEffect(() => {
     if (isError) {

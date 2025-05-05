@@ -12,12 +12,12 @@ export default function AuthLayout({ children }) {
   return (
     <Provider>
       <html lang="en">
-        <body className={`${kumbh.className} `}>
+        <body className={`font-serif`}>
           <ToastContainer
             toastStyle={{
-              minWidth: "350px",
-              maxWidth: "85vw",
+              maxWidth: "90vw",
               margin: "8px auto",
+              width:'350px'
             }}
           />
           <div>{children}</div>

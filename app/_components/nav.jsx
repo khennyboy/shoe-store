@@ -11,7 +11,6 @@ import { SiNike } from "react-icons/si";
 import { SiPuma } from "react-icons/si";
 import { CgAdidas } from "react-icons/cg";
 
-
 const navLinks = [
   { name: "Collections", path: "/" },
   { name: "adidas", path: "/?filter=adidas", icon: <CgAdidas /> },

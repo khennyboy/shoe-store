@@ -16,7 +16,7 @@ export async function sendOtpEmail(email) {
   }
 }
 
-export const handleSendCode = (email, sendCode) => {
+export const handleSendCode = (email, sendOtpEmail) => {
   if (!/\S+@\S+\.\S+/.test(email)) {
     toast.error("Please enter a valid email");
     return;

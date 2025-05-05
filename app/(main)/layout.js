@@ -4,7 +4,7 @@ import Provider from "../_components/queryClient";
 import Footer from "../_components/footer";
 import Nav from "../_components/nav";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const kumbh = Kumbh_Sans({
   subsets: ["latin"],
@@ -25,8 +25,14 @@ export default function RootLayout({ children }) {
   return (
     <Provider>
       <html lang="en">
-        <body className={`${kumbh.className} `} >
-          <ToastContainer />
+        <body className={`font-serif`}>
+          <ToastContainer
+            toastStyle={{
+              maxWidth: "90vw",
+              margin: "8px auto",
+              width: '350px'
+            }}
+          />
           <Nav />
           <div className="mt-24 mb-16 px-4 md:mt-32 md:mb-[5rem] md:px-8 lg:mt-36 xl:px-12">
             {children}

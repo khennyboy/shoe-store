@@ -5,24 +5,17 @@ import { PAGE_SIZE } from "../utils/constant";
 import { useEffect } from "react";
 import { useProducts } from "../hooks/handleProduct";
 import Loader from "../loading";
-import Dummy from "../_components/dummy";
 import AllProduct from "../_components/allProduct";
-import { useUser } from "../hooks/handleUser";
 import { toast } from "react-toastify";
 
 export default function HomePage() {
-  const { user } = useUser();
-  console.log(user);
-
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-
-  const { products = [], isLoading, isError } = useProducts();
-
+  const { products = [], isLoading, isError, error } = useProducts();
   let currentPage = Number(searchParams.get("page")) || 1;
   let pageCount = Math.ceil((products?.length || 0) / PAGE_SIZE);
-  
+
   useEffect(() => {
     const loggedIn = searchParams.get("loggedIn");
 
@@ -62,11 +55,8 @@ export default function HomePage() {
 
   if (isError) {
     return (
-      // <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-      //   {error?.message || "An error occurred"} Products can&#39;t be loaded
-      // </div>
-      <div>
-        <Dummy />
+      <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+        {error?.message || "An error occurred"} Products can&#39;t be loaded
       </div>
     );
   }

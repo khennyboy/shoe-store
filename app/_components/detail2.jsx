@@ -1,15 +1,13 @@
 import Image from "next/image";
 import minus from "@/public/icon-minus.svg";
 import plus from "@/public/icon-plus.svg";
-import cart from "@/public/icon-cart.svg";
 import { IoCart } from "react-icons/io5";
 
-export default function Detail2() {
+export default function Detail2({ data }) {
   return (
-    // <div className="">
     <div className="mx-auto max-w-lg space-y-3 sm:space-y-5">
-      <p className="text-xl font-bold text-dark-orange">SoleMate Company</p>
-      <h3 className="text-xl font-semibold leading-tight">
+      <p className="text-dark-orange text-xl font-bold">SoleMate Company</p>
+      <h3 className="text-xl leading-tight font-semibold">
         Fall Limited Edition <br className="sm:hidden" /> Sneakers
       </h3>
       <p className="leading-tight">
@@ -20,37 +18,36 @@ export default function Detail2() {
       <div className="flex justify-between font-semibold">
         <div className="flex items-center gap-3">
           <span id="discountPrice" className="">
-            ₦2500
+            {data.price * ((100 - data.discount) / 100)}
           </span>
           <span
             id="discount"
             className="rounded-md bg-gray-200 p-1 text-sm text-orange-500"
           >
-            25%
+            -{data.discount}%
           </span>
         </div>
         <div>
           <span id="actualPrice" className="line-through opacity-50">
-            ₦1400
+            {data.price}
           </span>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div className="mt-4 flex items-center rounded-lg bg-gray-200 py-3 sm:mt-0">
-          <button className="px-4 cursor-pointer ">
+          <button className="cursor-pointer px-4">
             <Image src={minus} alt="minus-icon" />
           </button>
           <span className="flex-1 text-center">23</span>
-          <button className="px-4 cursor-pointer">
+          <button className="cursor-pointer px-4">
             <Image src={plus} alt="plus-icon" />
           </button>
         </div>
-        <button className="flex items-center justify-center gap-2 rounded-lg bg-dark-orange py-3 font-semibold text-white ring-dark-orange ring-offset-2 ring-offset-white transition-all duration-200 ease-linear hover:bg-dark-orange/80 focus:ring-1 cursor-pointer">
-           <IoCart className="size-7 fill-gray-300" />
+        <button className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex cursor-pointer items-center justify-center gap-2 rounded-lg py-3 font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1">
+          <IoCart className="size-7 fill-gray-300" />
           Add to cart
         </button>
       </div>
     </div>
-    // </div>
   );
 }

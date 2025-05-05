@@ -1,22 +1,21 @@
-// app/api/send-email/route.ts
 import { Resend } from "resend";
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
 import supabase from "@/app/_lib/supabase";
-const resend = new Resend(
-  process.env.NEXT_PUBLIC_RESEND_KEY,
-);
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_KEY);
+
 export async function POST(request) {
   try {
     const { email } = await request.json();
-    // genarate the OTP and send to the user email and then save it to the database
-    const otp = Math.floor(1000 + Math.random() * 9000); 
-    // this expires in the next 5 minutes
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); 
-    await supabase.from('email_otps').insert([
-        { email, otp, expires_at: expiresAt }
-      ]);
-    const {data, error} = await resend.emails.send({
-      from: "onboarding@resend.dev", 
+
+    const otp = Math.floor(1000 + Math.random() * 9000);
+
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    await supabase
+      .from("email_otps")
+      .insert([{ email, otp, expires_at: expiresAt }]);
+      
+    const { data, error } = await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: email,
       subject: "Your OTP from SoleMate",
       html: `
@@ -30,7 +29,7 @@ export async function POST(request) {
         </div>
       `,
     });
-    if(error) throw new Error(error.message)
+    if (error) throw new Error(error.message);
     return NextResponse.json({ success: true, data });
   } catch (err) {
     return NextResponse.json(
