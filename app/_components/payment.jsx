@@ -22,5 +22,5 @@ export default function PaystackButtonWrapper({
     onClose: () => alert("Payment Closed"),
   };
 
-  return <PaystackButton {...componentProps} className="cursor-pointer" />;
+  return <PaystackButton {...componentProps}  />;
 }
