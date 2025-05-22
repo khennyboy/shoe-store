@@ -1,4 +1,3 @@
-"use client";
 import Test from "@/app/_components/test";
 
 export default function Contact() {

@@ -18,6 +18,7 @@ export default function Detail2({ data }) {
       <div className="flex justify-between font-semibold">
         <div className="flex items-center gap-3">
           <span id="discountPrice" className="">
+            <span className="mr-1">₦</span>
             {data.price * ((100 - data.discount) / 100)}
           </span>
           <span
@@ -29,6 +30,7 @@ export default function Detail2({ data }) {
         </div>
         <div>
           <span id="actualPrice" className="line-through opacity-50">
+            <span className="mr-1">₦</span>
             {data.price}
           </span>
         </div>

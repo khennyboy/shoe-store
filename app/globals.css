@@ -1,28 +1,26 @@
 @import "tailwindcss";
 
-
 @theme {
-    --color-dark-orange: hsl(26, 100%, 55%);
-    --color-pale-orange: hsl(25, 100%, 94%);
-    --color-very-dark-blue: hsl(220, 13%, 13%);
-    --color-dark-grayish-blue: hsl(219, 9%, 45%);
-    --color-grayish-blue: hsl(220, 14%, 75%);
-    --color-light-grayish-blue: hsl(223, 64%, 98%);
-    --color-black: hsl(0, 0%, 0%);
-    --breakpoint-sm2: 320px;
-    --text-eb: 1.05rem;
-    @keyframes zoom {
-      from {
-        transform: scale(0);
-      }
-      to {
-        transform: scale(1);
-      }
+  --color-dark-orange: hsl(26, 100%, 55%);
+  --color-pale-orange: hsl(25, 100%, 94%);
+  --color-very-dark-blue: hsl(220, 13%, 13%);
+  --color-dark-grayish-blue: hsl(219, 9%, 45%);
+  --color-grayish-blue: hsl(220, 14%, 75%);
+  --color-light-grayish-blue: hsl(223, 64%, 98%);
+  --color-black: hsl(0, 0%, 0%);
+  --breakpoint-sm2: 320px;
+  --text-eb: 1.05rem;
+  @keyframes zoom {
+    from {
+      transform: scale(0);
     }
-    --animate-zoom: zoom 0.6s linear;
-    --shadow-sm2: 0px 2px, 0px -2px, 2px 0px, -2px 0;
+    to {
+      transform: scale(1);
+    }
+  }
+  --animate-zoom: zoom 0.6s linear;
+  --shadow-sm2: 0px 2px, 0px -2px, 2px 0px, -2px 0;
 }
-
 
 .paginate::-webkit-scrollbar {
   height: 5px;
@@ -40,14 +38,20 @@
   opacity: 0.5;
 }
 
-.loader {
-  width: 6.4rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: conic-gradient(#0000 30%, orange);
-  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 10px), #000 0);
-  mask: radial-gradient(farthest-side, #0000 calc(100% - 10px), #000 0);
-  animation: rotate 1.5s infinite linear;
+@layer components {
+  .loader {
+    width: 6.4rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: conic-gradient(#0000 30%, orange);
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      #0000 calc(100% - 10px),
+      #000 0
+    );
+    mask: radial-gradient(farthest-side, #0000 calc(100% - 10px), #000 0);
+    animation: rotate 1.5s infinite linear;
+  }
 }
 
 @keyframes rotate {
@@ -57,8 +61,7 @@
 }
 
 input:not(:placeholder-shown) ~ label {
-  @apply 
-    hidden
+  display: none;
 }
 
 input:-webkit-autofill {
@@ -66,6 +69,7 @@ input:-webkit-autofill {
   -webkit-background-clip: text;
 }
 
-input[type='number']::-webkit-inner-spin-button{
+input[type="number"]::-webkit-inner-spin-button {
   display: none;
 }
+

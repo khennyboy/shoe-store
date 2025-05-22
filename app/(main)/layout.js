@@ -21,7 +21,7 @@ export const metadata = {
   tailored to your needs. Shop the perfect pair today!`,
 };
 
-export default function RootLayout({ children }) {
+export default function MainLayout({ children }) {
   return (
     <Provider>
       <html lang="en">

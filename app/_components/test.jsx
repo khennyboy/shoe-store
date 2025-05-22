@@ -20,7 +20,7 @@ export default function Test() {
         onClick={() => {
           const params = new URLSearchParams(searchParams);
           params.set("number", 1);
-          // router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
         }}
       >
         Click me to set number
