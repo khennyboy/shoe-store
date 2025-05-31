@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { IoCart } from "react-icons/io5";
@@ -10,7 +9,7 @@ import minus from "@/public/icon-minus.svg";
 import plus from "@/public/icon-plus.svg";
 
 export default function AllProduct({ product }) {
-  const handleAddToCart = useHandleCart();
+  const { handleAddToCart, handleQuantity } = useHandleCart();
   const mainContext = useContext(cartedProducts);
 
   return (
@@ -60,12 +59,20 @@ export default function AllProduct({ product }) {
 
             {/* Cart Control or Add to Cart */}
             {isInCart ? (
-              <div className="mt-3 flex items-center rounded-lg bg-gray-200 py-3">
-                <button className="cursor-pointer px-4">
+              <div className="mt-3 flex items-center rounded-lg bg-gray-200">
+                <button
+                  onClick={(e) => handleQuantity(e, each, "minus")}
+                  className="cursor-pointer px-4 py-4"
+                >
                   <Image src={minus} alt="minus-icon" />
                 </button>
-                <span className="flex-1 text-center">1</span>
-                <button className="cursor-pointer px-4">
+                <span className="flex-1 text-center">
+                  {isInCart?.quantity || 1}
+                </span>
+                <button
+                  onClick={(e) => handleQuantity(e, each, "plus")}
+                  className="cursor-pointer px-4 py-4"
+                >
                   <Image src={plus} alt="plus-icon" />
                 </button>
               </div>

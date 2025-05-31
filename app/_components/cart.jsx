@@ -10,7 +10,7 @@ export default function Cart() {
     <Link href="/cart" className="relative cursor-pointer">
       <IoCart className="size-7 fill-orange-500" />
       {mainContext.productCarted.length !== 0 && (
-        <span className="absolute -top-1 left-2/4 rounded-2xl bg-orange-600 px-2  py-0.5 text-center leading-3.5 text-[10px] text-white ">
+        <span className="absolute -top-1 left-2/4 rounded-2xl bg-orange-600 px-2 py-0.5 text-center text-[10px] leading-3.5 text-white">
           {mainContext.productCarted.length}
         </span>
       )}
