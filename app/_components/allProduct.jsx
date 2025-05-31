@@ -7,6 +7,7 @@ import { cartedProducts } from "./queryClient";
 import { useContext } from "react";
 import minus from "@/public/icon-minus.svg";
 import plus from "@/public/icon-plus.svg";
+import { formatCurrency } from "../utils/helpers";
 
 export default function AllProduct({ product }) {
   const { handleAddToCart, handleQuantity } = useHandleCart();
@@ -43,12 +44,11 @@ export default function AllProduct({ product }) {
                   {each.name}-{each.id}
                 </span>
                 <span className="block text-sm leading-tight font-semibold">
-                  <span className="mr-2">₦</span>
-                  {each.price * ((100 - each.discount) / 100)}
+                  {formatCurrency(each.price * ((100 - each.discount) / 100))}
                 </span>
                 <div className="flex items-center justify-between">
                   <span className="text-sm line-through opacity-60">
-                    ₦{each.price}
+                    {formatCurrency(each.price)}
                   </span>
                   <span className="bg-pale-orange text-dark-orange px-[6px] py-[2px] text-sm">
                     -{each.discount}%

@@ -6,14 +6,6 @@ import { cartedProducts } from "../_components/queryClient";
 export default function useHandleCart() {
   const mainContext = useContext(cartedProducts);
 
-  useEffect(() => {
-    const cartedProduct =
-      JSON.parse(localStorage.getItem("cartedProduct")) || null;
-    if (cartedProduct) {
-      mainContext.setProductCarted(cartedProduct);
-    }
-  }, []);
-
   const handleAddToCart = (e, product) => {
     const updatedCart = [
       ...mainContext.productCarted,
@@ -37,12 +29,29 @@ export default function useHandleCart() {
               : item.quantity;
         return { ...item, quantity }; // ✅ return updated product
       }
-      return item;  // ✅ return product unchanged
+      return item; // ✅ return product unchanged
     });
 
     mainContext.setProductCarted(updatedCart);
     localStorage.setItem("cartedProduct", JSON.stringify(updatedCart));
   };
 
-  return { handleAddToCart, handleQuantity };
+  const handleDeleteCart = (e, product) => {
+    const updatedCart = mainContext.productCarted.filter(
+      (each) => each.id !== product.id,
+    );
+
+    mainContext.setProductCarted(updatedCart);
+    localStorage.setItem("cartedProduct", JSON.stringify(updatedCart));
+  };
+
+  const totalPrice = mainContext.productCarted
+  .map(
+    (each) =>
+      each.quantity * (each.price * ((100 - each.discount) / 100))
+  )
+  .reduce((total, value) => total + value, 0);
+
+
+  return { handleAddToCart, handleQuantity, handleDeleteCart, totalPrice };
 }
