@@ -1,5 +1,6 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createContext, useState } from "react";
 
 const queryClient = new QueryClient({
@@ -10,16 +11,17 @@ const queryClient = new QueryClient({
   },
 });
 
-export const cartedProduct = createContext();
+export const cartedProducts = createContext();
 
 export default function Provider({ children }) {
-  const [cartedItem, setCartedItem] = useState({})
-  
+  const [productCarted, setProductCarted] = useState([]);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <cartedProduct.Provider value={{cartedItem, setCartedItem}}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <cartedProducts.Provider value={{ productCarted, setProductCarted }}>
         {children}
-      </cartedProduct.Provider>
+      </cartedProducts.Provider>
     </QueryClientProvider>
   );
 }

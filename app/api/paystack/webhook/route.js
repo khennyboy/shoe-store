@@ -1,62 +1,79 @@
-// app/api/paystack/webhook/route.js
-import { NextResponse } from 'next/server';
-import crypto from 'crypto';
+import { NextResponse } from "next/server";
+import crypto from "crypto";
 
-export const config = {
-  runtime: 'nodejs',   // ensure we can use crypto
-};
+const PAYSTACK_SECRET_KEY = process.env.NEXT_PUBLIC_PAYSTACK_SECRET_KEY || "";
 
-const PAYSTACK_SECRET = process.env.NEXT_PUBLIC_PAYSTACK_SECRET_KEY;
+export async function POST(req) {
+  const rawBody = await req.text();
+  const paystackSignature = req.headers.get("x-paystack-signature");
 
-async function verifySignature(rawBody, signature) {
   const hash = crypto
-    .createHmac('sha512', PAYSTACK_SECRET)
+    .createHmac("sha512", PAYSTACK_SECRET_KEY)
     .update(rawBody)
-    .digest('hex');
+    .digest("hex");
 
-  if (hash !== signature) {
-    return null;
-  }
-  return JSON.parse(rawBody);
-}
-
-export async function POST(request) {
-  const signature = request.headers.get('x-paystack-signature');
-  const rawBody = await request.text();
-
-  const event = await verifySignature(rawBody, signature);
-  if (!event) {
-    return NextResponse.json(
-      { error: 'Invalid signature' },
-      { status: 401 }
-    );
+  if (hash !== paystackSignature) {
+    return new NextResponse("Invalid signature", { status: 403 });
   }
 
-  const { event: eventType, data } = event;
+  const event = JSON.parse(rawBody);
 
-  switch (eventType) {
-    case 'charge.success':
-      console.log('✅ Payment succeeded:', data);
-      // TODO: mark order as paid in your DB
+  console.log("Paystack webhook event:", event);
+
+  switch (event.event) {
+    case "charge.success":
+      console.log("✅ Payment succeeded:", event.data);
       break;
 
-    case 'charge.failed':
-      console.log('❌ Payment failed:', data);
-      // TODO: mark order as failed in your DB
+    case "invoice.payment_failed":
+      console.log("❌ Payment failed:", event.data);
       break;
 
-    // Paystack doesn’t have a single “cancelled” event, 
-    // but you can catch related ones:
-    case 'authorization.cancelled':
-    case 'customeridentification.failed':
-      console.log('🚫 Payment cancelled/authorization failed:', data);
-      // TODO: mark order as cancelled in your DB
+    case "charge.cancelled":
+      console.log("⚠️ User canceled the payment or closed modal.");
       break;
 
     default:
-      console.log('ℹ️ Unhandled event:', eventType);
+      console.log("ℹ️ Unhandled event:", event.event);
   }
-
-  // Always return 200 to acknowledge receipt
-  return NextResponse.json({ received: true });
+  return NextResponse.json({ message: "OK" }, { status: 200 });
 }
+
+export async function GET(req) {
+  return NextResponse.json(
+    { success: false, error: `Failed to send email` },
+    { status: 500 },
+  );
+}
+
+
+
+
+// app.post('/api/paystack/webhook', (req, res) => {
+//     const event = req.body;
+  
+//     // 1. Verify the event came from Paystack
+//     const hash = crypto
+//       .createHmac("sha512", process.env.PAYSTACK_SECRET)
+//       .update(JSON.stringify(req.body))
+//       .digest("hex");
+  
+//     if (hash !== req.headers['x-paystack-signature']) {
+//       return res.status(401).send('Unauthorized');
+//     }
+  
+//     if (event.event === 'charge.success') {
+//       const reference = event.data.reference;
+//       const email = event.data.customer.email;
+  
+//       // 3. Update your database
+//       const user = findUserByEmail(email);
+//       user.paid = true;
+//       saveUser(user);
+  
+//       sendEmail(email, "Payment successful", "You'll receive your goods in 3-5 days.");
+//     }
+  
+//     res.sendStatus(200);
+//   });
+  

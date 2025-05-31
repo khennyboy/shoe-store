@@ -26,7 +26,7 @@ export default function useLoginLogout() {
     mutationFn: logoutUser,
     retry: false,
     onSuccess: () => {
-      queryClient.setQueryData(['session'], null);
+      queryClient.setQueryData(['user'], null);
     }
   });
 

@@ -40,7 +40,7 @@ export default function Detail2({ data }) {
           <button className="cursor-pointer px-4">
             <Image src={minus} alt="minus-icon" />
           </button>
-          <span className="flex-1 text-center">23</span>
+          <span className="flex-1 text-center">1</span>
           <button className="cursor-pointer px-4">
             <Image src={plus} alt="plus-icon" />
           </button>

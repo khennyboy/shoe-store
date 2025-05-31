@@ -12,7 +12,7 @@ export default function Detail1({data}) {
         alt="product-image"
         className="h-[20rem] w-full cursor-zoom-in rounded-[12px] object-cover"
       />
-      <div className="hidden gap-4 *:cursor-pointer md:flex">
+      <div className="hidden gap-4 *:cursor-pointer">
         <div>
           <Image src={produt1} alt="product-image" className="rounded-lg" />
         </div>

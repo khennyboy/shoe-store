@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 // Dynamically import PaystackButtonWrapper to avoid SSR issues
 const PaystackButtonWrapper = dynamic(
-  () => import("@/app/_components/payment"),
+  () => import("@/app/_components/paystackbuttonwrapper"),
   { ssr: false }
 );
 
@@ -14,7 +14,7 @@ export default function Payment() {
   const [email, setEmail] = useState("abdullateefkehinde848@gmail.com");
   const [name, setName] = useState("Sheriff");
   const [phone, setPhone] = useState("07026771744");
-  const amount = 100000; // Amount in Kobo
+  const amount = 10000; // Amount in Kobo
   const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "";
 
   return (
