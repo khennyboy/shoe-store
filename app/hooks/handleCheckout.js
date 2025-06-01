@@ -7,11 +7,12 @@ export default function useHandleCheckout() {
   const { user } = useUser();
   const handleCheckout = () => {
     console.log('hello')
-    if (user) {
-      router.push("/payment");
-    } else {
-      router.push("/auth/login");
-    }
+    // console.log('hello')
+    // if (user) {
+    //   router.push("/payment");
+    // } else {
+    //   router.push("/auth/login");
+    // }
   };
   return { handleCheckout };
 }

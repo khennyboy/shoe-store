@@ -6,6 +6,7 @@ import { useContext } from "react";
 import useHandleCart from "@/app/hooks/handleCart";
 import useHandleCheckout from "@/app/hooks/handleCheckout";
 import { formatCurrency } from "@/app/utils/helpers";
+import Link from "next/link";
 
 export default function CartedItem() {
   const mainContext = useContext(cartedProducts);
@@ -82,12 +83,13 @@ export default function CartedItem() {
             {formatCurrency(2300)}
           </div>
         </div>
-        <button
-          onClick={() => handleCheckout()}
+        <Link
+          href="/payment"
+          // onClick={() => handleCheckout()}
           className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 visible flex w-full cursor-pointer items-center justify-center gap-3 rounded-md py-3 text-center text-sm font-bold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear group-hover:visible focus:ring-1"
         >
           Checkout ({formatCurrency(totalPrice)})
-        </button>
+        </Link>
       </div>
     </div>
   );

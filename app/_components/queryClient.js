@@ -1,7 +1,7 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,6 +15,13 @@ export const cartedProducts = createContext();
 
 export default function Provider({ children }) {
   const [productCarted, setProductCarted] = useState([]);
+
+  useEffect(() => {
+    const cartedProduct = JSON.parse(localStorage.getItem("cartedProduct"));
+    if (cartedProduct) {
+      setProductCarted(cartedProduct);
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

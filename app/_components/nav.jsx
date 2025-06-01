@@ -26,15 +26,6 @@ export default function Nav() {
   const pathname = usePathname();
   const navRef = useRef(null);
   const searchParams = useSearchParams();
-  const mainContext = useContext(cartedProducts)
-
-   useEffect(() => {
-      const cartedProduct =
-        JSON.parse(localStorage.getItem("cartedProduct"));
-      if (cartedProduct) {
-        mainContext.setProductCarted(cartedProduct);
-      }
-    }, []);
 
   const toggleIcon = useCallback((event) => {
     event.stopPropagation();

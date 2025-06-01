@@ -17,25 +17,16 @@ export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState, reset } = useForm();
-  const {
-    login,
-    isLoggingIn,
-    loginError,
-    isLoginError,
-    isLoginSuccess,
-  } = useLoginLogout();
+  const { login, isLoggingIn, loginError, isLoginError, isLoginSuccess } =
+    useLoginLogout();
 
-  const {
-    loginGoogle,
-    isSuccessGoogle
-  } = useGoogle();
+  const { loginGoogle, isSuccessGoogle } = useGoogle();
 
   const { errors } = formState;
 
   function onSubmit(data) {
     login(data);
   }
-
 
   // useEffect for handling login button
   useEffect(() => {
@@ -44,19 +35,17 @@ export default function Login() {
     }
     if (isLoginSuccess) {
       toast.success("Login Successful");
-      reset()
+      reset();
       router.push("/");
     }
-    
   }, [loginError, isLoginError, isLoginSuccess]);
-
 
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-lg rounded-lg bg-gray-100 px-4 py-8 shadow-md md:px-8">
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-orange-500">SoleMate</h1>
-        </div>
+        <h1 className="mb-6 text-center text-2xl font-bold text-orange-500">
+          SoleMate
+        </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} method="post">
           <div className="mb-6">

@@ -56,9 +56,9 @@ const SignUpPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="mt-8 w-full max-w-lg rounded-lg bg-gray-100 px-4 py-8 shadow-md md:px-8">
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-orange-500">SoleMate</h1>
-        </div>
+        <h1 className="mb-6 text-center text-2xl font-bold text-orange-500">
+          SoleMate
+        </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} method="post">
           <div className="mb-6">
