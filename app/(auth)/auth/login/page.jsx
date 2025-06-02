@@ -10,18 +10,20 @@ import { useForm } from "react-hook-form";
 import Error from "@/app/_components/error";
 import useGoogle from "@/app/hooks/handleGoogle";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import useLoginLogout from "@/app/hooks/handleLoginLogout";
 
 export default function Login() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/";
+
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState, reset } = useForm();
   const { login, isLoggingIn, loginError, isLoginError, isLoginSuccess } =
     useLoginLogout();
 
-  const { loginGoogle, isSuccessGoogle } = useGoogle();
-
+  const { loginGoogle } = useGoogle();
   const { errors } = formState;
 
   function onSubmit(data) {
@@ -36,7 +38,7 @@ export default function Login() {
     if (isLoginSuccess) {
       toast.success("Login Successful");
       reset();
-      router.push("/");
+      router.push(redirect);
     }
   }, [loginError, isLoginError, isLoginSuccess]);
 
@@ -111,7 +113,7 @@ export default function Login() {
 
           <div className="mt-4 flex justify-between text-sm text-orange-400">
             <Link
-              href="#"
+              href="/passwordrecovery"
               className="transition-all duration-200 ease-linear hover:text-orange-500"
             >
               Forgot password?

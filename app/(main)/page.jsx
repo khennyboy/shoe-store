@@ -18,13 +18,14 @@ export default function HomePage() {
 
   useEffect(() => {
     const loggedIn = searchParams.get("loggedIn");
+    const payment = searchParams.get("redirect");
 
     if (loggedIn === "true") {
       toast.success("Login successful!");
-
       const params = new URLSearchParams(searchParams);
       params.delete("loggedIn");
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      const redirectUrl = payment ? `/${payment}` : pathname;
+      router.replace(`${redirectUrl}`, { scroll: false });
     }
   }, [searchParams, pathname, router]);
 

@@ -14,14 +14,6 @@ export async function getProducts() {
 
 export async function signupUser({ otp, email, password }) {
   try {
-    const { data: existingUser, error: userError } = await supabase
-      .from("users")
-      .select("email")
-      .eq("email", email)
-      .single();
-    if (existingUser) {
-      throw new Error("User already exists with this email");
-    }
     await verifyOTP(otp, email);
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -88,10 +80,18 @@ export async function logoutUser() {
 
 export async function signInWithGoogle() {
   try {
+    const searchParams = new URLSearchParams(window.location.search);
+    console.log(searchParams);
+    const redirectParam = searchParams.get("redirect");
+
+    const redirectToUrl = redirectParam
+      ? `${window.location.origin}/?loggedIn=true&redirect=${redirectParam}`
+      : `${window.location.origin}/?loggedIn=true`;
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/?loggedIn=true`,
+        redirectTo: redirectToUrl,
       },
     });
 
@@ -115,4 +115,3 @@ export async function getCurrentUser() {
     throw new Error(error.message);
   }
 }
-

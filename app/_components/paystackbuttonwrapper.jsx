@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { PaystackButton } from "react-paystack";
 import { formatCurrency } from "../utils/helpers";
@@ -8,20 +8,25 @@ export default function PaystackButtonWrapper({
   amount,
   name,
   phone,
+  address,
   publicKey,
 }) {
   const componentProps = {
     email,
-    amount,
+    amount: Number(amount) * 100,
     metadata: {
       name,
       phone,
+      address, 
     },
     publicKey,
     text: `${formatCurrency(amount)} Pay Now`,
     onSuccess: () => alert("Payment Successful!"),
     onClose: () => alert("Payment Closed"),
   };
+
+  // Don't render button unless required fields are present
+  if (!email || !amount || !name || !address) return null;
 
   return (
     <PaystackButton

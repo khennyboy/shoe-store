@@ -67,7 +67,7 @@ export default function Detail2({ data }) {
         </div>
         <button
           onClick={(e) => handleAddToCart(e, data)}
-          className={`bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex cursor-pointer items-center justify-center gap-2 rounded-lg py-3 font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 ${isInCart ? "hidden" : "block"}`}
+          className={`bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 flex cursor-pointer items-center justify-center gap-2 rounded-lg py-2.5 font-medium text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 ${isInCart ? "hidden" : "block"}`}
         >
           <IoCart className="size-7 fill-gray-300" />
           Add to cart

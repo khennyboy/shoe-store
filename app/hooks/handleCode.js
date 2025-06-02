@@ -1,5 +1,5 @@
 'use client'
-import { sendOtpEmail } from "../_lib/send-code";
+import { handleSendCode, sendOtpEmail } from "../_lib/send-code";
 import { useMutation} from "@tanstack/react-query";
 
 export default function useCode() {
@@ -10,9 +10,9 @@ export default function useCode() {
     isError,
     isSuccess
   } = useMutation({
-    mutationFn: sendOtpEmail,
+    mutationFn: handleSendCode,
     retry: false,
   });
   
-  return {sendCode, isLoading, error, isError, isSuccess };
+  return {sendCode, isLoading, isSuccess };
 }

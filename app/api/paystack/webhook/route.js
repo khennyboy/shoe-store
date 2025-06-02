@@ -47,33 +47,3 @@ export async function GET(req) {
 }
 
 
-
-
-// app.post('/api/paystack/webhook', (req, res) => {
-//     const event = req.body;
-  
-//     // 1. Verify the event came from Paystack
-//     const hash = crypto
-//       .createHmac("sha512", process.env.PAYSTACK_SECRET)
-//       .update(JSON.stringify(req.body))
-//       .digest("hex");
-  
-//     if (hash !== req.headers['x-paystack-signature']) {
-//       return res.status(401).send('Unauthorized');
-//     }
-  
-//     if (event.event === 'charge.success') {
-//       const reference = event.data.reference;
-//       const email = event.data.customer.email;
-  
-//       // 3. Update your database
-//       const user = findUserByEmail(email);
-//       user.paid = true;
-//       saveUser(user);
-  
-//       sendEmail(email, "Payment successful", "You'll receive your goods in 3-5 days.");
-//     }
-  
-//     res.sendStatus(200);
-//   });
-  

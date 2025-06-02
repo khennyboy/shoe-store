@@ -8,7 +8,6 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import useCode from "@/app/hooks/handleCode";
 import { toast } from "react-toastify";
-import { handleSendCode } from "@/app/_lib/send-code";
 import Error from "@/app/_components/error";
 import useSignup from "@/app/hooks/handleSignup";
 import { useRouter } from "next/navigation";
@@ -19,28 +18,51 @@ const SignUpPage = () => {
     password: false,
     confirmPassword: false,
   });
-  const [btn, setBtn] = useState(true);
+  const [codeSent, setCodeSent] = useState(false);
+  const [countdown, setCountdown] = useState(0);
 
-  const { register, handleSubmit, formState, reset, getValues } = useForm();
+  const { register, handleSubmit, formState, reset, getValues, setValue } =
+    useForm();
   let { errors } = formState;
 
-  const { sendCode, isLoading, error, isError, isSuccess } = useCode();
+  const { sendCode, isLoading, isSuccess } = useCode();
   const { signup, signupLoading, signupError, signupisError, signupisSuccess } =
     useSignup();
 
+  const handleSendCode = async () => {
+    const email = getValues().email;
+    if (!email) {
+      toast.error("Please enter your email first");
+      return;
+    }
+
+    setCodeSent(true);
+    setCountdown(60);
+    await sendCode(email);
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setCodeSent(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   function onSubmit(data) {
-    signup(data);
+    // Combine OTP digits into single string
+    const fullOTP = Array.isArray(data.otp) ? data.otp.join("") : data.otp;
+    signup({ ...data, otp: fullOTP });
   }
 
   useEffect(() => {
-    if (isError) {
-      toast.error("Error generating OTP!");
-    }
     if (isSuccess) {
-      toast.success("OTP sent sucessfully");
-      setBtn(false);
+      toast.success("Verification code sent successfully");
     }
-  }, [isError, error, isSuccess]);
+  }, [isSuccess]);
 
   useEffect(() => {
     if (signupisError) {
@@ -121,7 +143,7 @@ const SignUpPage = () => {
                 {...register("confirmPassword", {
                   required: "This field is required",
                   validate: (value) =>
-                    value === getValues().password || "Password need to match",
+                    value === getValues().password || "Passwords need to match",
                 })}
                 type={showPassword.confirmPassword ? "text" : "password"}
                 className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
@@ -151,32 +173,65 @@ const SignUpPage = () => {
           </div>
 
           <div className="mb-6">
-            <div className="flex gap-4">
-              <div className="relative flex-1">
-                <input
-                  type="number"
-                  maxLength="4"
-                  className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
-                  placeholder=" "
-                  {...register("otp", {
-                    required: "This field is required",
-                  })}
-                />
-                <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
-                  {" "}
-                  # Code
-                </label>
+            <div className="flex flex-col gap-2">
+              <label className="flex items-center gap-2 text-sm text-gray-500">
+                <LuLockKeyhole /> Verification Code
+              </label>
+              <div className="flex items-center gap-4">
+                {[0, 1, 2, 3].map((i) => (
+                  <input
+                    key={i}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={1}
+                    className="h-14 w-14 rounded-md border-2 border-orange-300 text-center text-2xl font-bold focus:border-orange-500 focus:outline-none"
+                    {...register(`otp.${i}`, {
+                      required: "All digits are required",
+                      pattern: {
+                        value: /^[0-9]$/,
+                        message: "Only numbers are allowed",
+                      },
+                    })}
+                    onKeyDown={(e) => {
+                      // Only allow numbers
+                      if (!e.key.match(/^[0-9]$/) && e.key !== "Backspace") {
+                        e.preventDefault();
+                      }
+                      // Auto-focus next input on entry
+                      if (e.key.match(/^[0-9]$/)) {
+                        setTimeout(() => {
+                          const nextInput = e.target.nextElementSibling;
+                          if (nextInput) nextInput.focus();
+                        }, 0);
+                      }
+                      // Handle backspace
+                      if (e.key === "Backspace" && !e.target.value) {
+                        const prevInput = e.target.previousElementSibling;
+                        if (prevInput) prevInput.focus();
+                      }
+                    }}
+                  />
+                ))}
               </div>
+              <Error error={errors?.otp?.message} />
+            </div>
+            <div className="mt-4">
               <button
-                disabled={isLoading}
-                onClick={() => handleSendCode(getValues().email, sendCode)}
+                disabled={isLoading || codeSent}
+                onClick={handleSendCode}
                 type="button"
-                className="border-opacity-100 hover:border-opacity-0 cursor-pointer rounded-md border border-orange-400 px-4 py-3 text-center text-sm text-gray-800 transition-all duration-300 ease-linear hover:shadow-md disabled:cursor-not-allowed lg:px-8 lg:text-base"
+                className={`border-opacity-100 hover:border-opacity-0 cursor-pointer rounded-md border border-orange-400 px-4 py-3 text-center text-sm text-gray-800 transition-all duration-300 ease-linear hover:shadow-md disabled:cursor-not-allowed lg:px-8 lg:text-base ${
+                  codeSent ? "opacity-50" : ""
+                }`}
               >
-                {isLoading ? "Sending..." : "Send Code"}
+                {isLoading
+                  ? "Sending..."
+                  : codeSent
+                    ? `Resend in ${countdown}s`
+                    : "Send Code"}
               </button>
             </div>
-            <Error error={errors?.otp?.message} />
           </div>
 
           <p className="mb-6 text-sm text-gray-400">
@@ -193,10 +248,10 @@ const SignUpPage = () => {
 
           <button
             type="submit"
-            disabled={btn || signupLoading}
+            disabled={signupLoading}
             className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed lg:font-bold"
           >
-            {signupLoading ? "Signing Up..." : "SIgn Up"}
+            {signupLoading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
 
@@ -204,7 +259,7 @@ const SignUpPage = () => {
           href="/auth/login"
           className="block text-center text-orange-400 transition-all duration-200 ease-linear hover:text-orange-500"
         >
-          Log In
+          Already have an account? Log In
         </Link>
       </div>
     </div>
