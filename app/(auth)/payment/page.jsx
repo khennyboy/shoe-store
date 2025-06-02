@@ -1,11 +1,13 @@
 "use client";
-import { useState } from "react";
+import {  useLayoutEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { LuMail } from "react-icons/lu";
 import useHandleCart from "@/app/hooks/handleCart";
 import { SiNamecheap } from "react-icons/si";
 import { PiPhoneOutgoingThin } from "react-icons/pi";
 import { FaRegAddressBook } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/app/hooks/handleUser";
 
 const PaystackButtonWrapper = dynamic(
   () => import("@/app/_components/paystackbuttonwrapper"),
@@ -13,12 +15,22 @@ const PaystackButtonWrapper = dynamic(
 );
 
 export default function Payment() {
+  const {user} = useUser()
+  const router = useRouter()
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
     phoneNumber: "",
     address: "",
   });
+
+  useLayoutEffect(() => {
+    if (!user) {
+      router.push('/auth/login?redirect=/payment')
+    }
+  }, [])
+
+
   const { totalPrice: amount } = useHandleCart();
   const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "";
 
