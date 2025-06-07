@@ -8,7 +8,7 @@ export async function getProducts() {
     }
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 }
 
@@ -24,7 +24,7 @@ export async function signupUser({ otp, email, password }) {
     await supabase.from("email_otps").delete().eq("email", email);
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 }
 
@@ -50,7 +50,7 @@ async function verifyOTP(otp, email) {
 
     return true;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 }
 
@@ -63,7 +63,7 @@ export async function loginUser({ email, password }) {
     if (error) throw new Error(error.message);
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 }
 
@@ -74,14 +74,13 @@ export async function logoutUser() {
     if (error) throw new Error(error.message);
     return true;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 }
 
 export async function signInWithGoogle() {
   try {
     const searchParams = new URLSearchParams(window.location.search);
-    console.log(searchParams);
     const redirectParam = searchParams.get("redirect");
 
     const redirectToUrl = redirectParam
@@ -98,7 +97,7 @@ export async function signInWithGoogle() {
     if (error) throw new Error(error.message);
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 }
 
@@ -112,6 +111,20 @@ export async function getCurrentUser() {
 
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
+  }
+}
+
+export async function updateUser({ email, password }) {
+  try {
+    const { data, error } = await supabase.auth.updateUser({
+      email: email,
+      password: password,
+    });
+    if (error) throw new Error(error.message);
+    return data;
+  } catch (error) {
+    throw error;
+    console.error(error);
   }
 }

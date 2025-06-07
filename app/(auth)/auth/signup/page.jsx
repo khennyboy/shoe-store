@@ -6,11 +6,11 @@ import { LuLockKeyhole } from "react-icons/lu";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
-import useCode from "@/app/hooks/handleCode";
 import { toast } from "react-toastify";
 import Error from "@/app/_components/error";
 import useSignup from "@/app/hooks/handleSignup";
 import { useRouter } from "next/navigation";
+import { handleSendCode } from "@/app/_lib/send-code";
 
 const SignUpPage = () => {
   const router = useRouter();
@@ -20,58 +20,28 @@ const SignUpPage = () => {
   });
   const [codeSent, setCodeSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { register, handleSubmit, formState, reset, getValues, setValue } =
-    useForm();
+  const { register, handleSubmit, formState, reset, getValues } = useForm();
   let { errors } = formState;
 
-  const { sendCode, isLoading, isSuccess } = useCode();
   const { signup, signupLoading, signupError, signupisError, signupisSuccess } =
     useSignup();
 
-  const handleSendCode = async () => {
-    const email = getValues().email;
-    if (!email) {
-      toast.error("Please enter your email first");
-      return;
-    }
-
-    setCodeSent(true);
-    setCountdown(60);
-    await sendCode(email);
-
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          setCodeSent(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
   function onSubmit(data) {
-    // Combine OTP digits into single string
+    const { email, password } = data;
     const fullOTP = Array.isArray(data.otp) ? data.otp.join("") : data.otp;
-    signup({ ...data, otp: fullOTP });
+    signup({ email, password, fullOTP });
   }
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Verification code sent successfully");
-    }
-  }, [isSuccess]);
 
   useEffect(() => {
     if (signupisError) {
       toast.error(signupError.message);
     }
     if (signupisSuccess) {
+      router.push("/auth/login");
       toast.success("Sign up successful");
       reset();
-      router.push("/auth/login");
     }
   }, [signupisError, signupisSuccess]);
 
@@ -185,7 +155,8 @@ const SignUpPage = () => {
                     inputMode="numeric"
                     pattern="[0-9]*"
                     maxLength={1}
-                    className="h-14 w-14 rounded-md border-2 border-orange-300 text-center text-2xl font-bold focus:border-orange-500 focus:outline-none"
+                    tabIndex={i + 1} // Ensures proper tab order
+                    className="h-12 w-12 rounded-md border-2 border-orange-300 text-center text-xl font-medium focus:border-orange-500 focus:outline-none"
                     {...register(`otp.${i}`, {
                       required: "All digits are required",
                       pattern: {
@@ -195,9 +166,14 @@ const SignUpPage = () => {
                     })}
                     onKeyDown={(e) => {
                       // Only allow numbers
-                      if (!e.key.match(/^[0-9]$/) && e.key !== "Backspace") {
+                      if (
+                        !e.key.match(/^[0-9]$/) &&
+                        e.key !== "Backspace" &&
+                        e.key !== "Tab"
+                      ) {
                         e.preventDefault();
                       }
+
                       // Auto-focus next input on entry
                       if (e.key.match(/^[0-9]$/)) {
                         setTimeout(() => {
@@ -205,22 +181,37 @@ const SignUpPage = () => {
                           if (nextInput) nextInput.focus();
                         }, 0);
                       }
+
                       // Handle backspace
                       if (e.key === "Backspace" && !e.target.value) {
                         const prevInput = e.target.previousElementSibling;
                         if (prevInput) prevInput.focus();
                       }
+
+                      // Handle Tab key
+                      if (e.key === "Tab" && !e.shiftKey && !e.target.value) {
+                        e.preventDefault();
+                        const nextInput = e.target.nextElementSibling;
+                        if (nextInput) nextInput.focus();
+                      }
                     }}
                   />
                 ))}
               </div>
-              <Error error={errors?.otp?.message} />
             </div>
             <div className="mt-4">
               <button
                 disabled={isLoading || codeSent}
-                onClick={handleSendCode}
+                onClick={() =>
+                  handleSendCode(
+                    getValues().email,
+                    setCodeSent,
+                    setCountdown,
+                    setIsLoading,
+                  )
+                }
                 type="button"
+                tabIndex={5} // After the OTP fields
                 className={`border-opacity-100 hover:border-opacity-0 cursor-pointer rounded-md border border-orange-400 px-4 py-3 text-center text-sm text-gray-800 transition-all duration-300 ease-linear hover:shadow-md disabled:cursor-not-allowed lg:px-8 lg:text-base ${
                   codeSent ? "opacity-50" : ""
                 }`}
@@ -248,8 +239,8 @@ const SignUpPage = () => {
 
           <button
             type="submit"
-            disabled={signupLoading}
-            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed lg:font-bold"
+            disabled={!codeSent || signupLoading}
+            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed sm:py-4 lg:font-bold"
           >
             {signupLoading ? "Signing Up..." : "Sign Up"}
           </button>

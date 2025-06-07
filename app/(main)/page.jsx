@@ -24,10 +24,11 @@ export default function HomePage() {
       toast.success("Login successful!");
       const params = new URLSearchParams(searchParams);
       params.delete("loggedIn");
-      const redirectUrl = payment ? `/${payment}` : pathname;
-      router.replace(`${redirectUrl}`, { scroll: false });
     }
-  }, [searchParams, pathname, router]);
+    if (payment) {
+      router.replace(`/payment`, { scroll: false });
+    }
+  }, [searchParams, router]);
 
   useEffect(() => {
     if (currentPage > pageCount && pageCount > 0) {

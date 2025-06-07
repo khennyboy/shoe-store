@@ -16,13 +16,12 @@ import useLoginLogout from "@/app/hooks/handleLoginLogout";
 export default function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/";
+  const redirect = searchParams.get("redirect");
 
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState, reset } = useForm();
   const { login, isLoggingIn, loginError, isLoginError, isLoginSuccess } =
     useLoginLogout();
-
   const { loginGoogle } = useGoogle();
   const { errors } = formState;
 
@@ -30,7 +29,6 @@ export default function Login() {
     login(data);
   }
 
-  // useEffect for handling login button
   useEffect(() => {
     if (isLoginError) {
       toast.error(loginError.message);
@@ -38,7 +36,7 @@ export default function Login() {
     if (isLoginSuccess) {
       toast.success("Login Successful");
       reset();
-      router.push(redirect);
+      router.push(redirect ? `/?redirect=${redirect}` : "/");
     }
   }, [loginError, isLoginError, isLoginSuccess]);
 
@@ -106,9 +104,9 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoggingIn}
-            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 sm:py-3 lg:font-bold"
+            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed lg:font-bold sm:py-4"
           >
-            Sign in
+            {isLoggingIn ? "Signing in" : "Sign in"}
           </button>
 
           <div className="mt-4 flex justify-between text-sm text-orange-400">

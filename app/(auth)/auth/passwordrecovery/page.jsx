@@ -1,113 +1,150 @@
 "use client";
+import Error from "@/app/_components/error";
+import useUpdateUser from "@/app/hooks/handleresetpassword";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { FaRegEyeSlash } from "react-icons/fa6";
+import { LuLockKeyhole, LuMail } from "react-icons/lu";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
-import { useState } from "react";
-import { toast } from "react-toastify";
+const PasswordrecoveryPage = () => {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
+  });
 
-export default function PasswordRecoveryPage() {
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [step, setStep] = useState(1); // 1 = email, 2 = otp + password
-  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, formState, reset, getValues } = useForm();
+  let { errors } = formState;
 
-  const handleSendOtp = async () => {
-    if (!/\S+@\S+\.\S+/.test(email)) return toast.error("Enter a valid email");
+  const { updateUserData, isUpdating, error, isError, isSuccess } =
+    useUpdateUser();
 
-    setLoading(true);
-    try {
-      const res = await fetch("/api/send-reset-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
+  function onSubmit(data) {
+    const { email, password } = data;
+    updateUserData({ email, password });
+  }
 
-      if (!res.ok) throw new Error(data.error || "Something went wrong");
-
-      toast.success("OTP sent to your email");
-      setStep(2);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.message);
     }
-  };
-
-  const handleVerifyOtp = async () => {
-    if (!otp || !newPassword) {
-      return toast.error("Please enter the OTP and new password");
+    if (isSuccess) {
+      router.push("/auth/login");
+      toast.success("password reset successful");
+      reset();
     }
-
-    setLoading(true);
-    try {
-      const res = await fetch("/api/verify-reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, newPassword }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to reset password");
-
-      toast.success("Password updated successfully. You can now log in.");
-      // optionally: redirect to login
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [isError, isSuccess]);
 
   return (
-    <div className="mx-auto mt-16 max-w-md rounded bg-white p-6 shadow">
-      <h2 className="mb-6 text-center text-2xl font-bold">Password Recovery</h2>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="mt-8 w-full max-w-lg rounded-lg bg-gray-100 px-4 py-8 shadow-md md:px-8">
+        <h2 className="mb-6 text-center text-2xl font-bold text-orange-500">
+          Password Recovery
+        </h2>
 
-      {step === 1 && (
-        <>
-          <label className="mb-2 block font-semibold">Email address</label>
-          <input
-            type="email"
-            className="mb-4 w-full rounded border px-3 py-2"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        <form onSubmit={handleSubmit(onSubmit)} method="post">
+          <div className="mb-6">
+            <div className="relative">
+              <input
+                {...register("email", {
+                  required: "This field is required",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Please provide a valid email address",
+                  },
+                })}
+                type="email"
+                className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
+                placeholder=" "
+              />
+              <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
+                {" "}
+                <LuMail /> Email address
+              </label>
+            </div>
+            <Error error={errors?.email?.message} />
+          </div>
+
+          <div className="mb-6">
+            <div className="relative">
+              <input
+                {...register("password", {
+                  required: "This field is required",
+                })}
+                type={showPassword.password ? "text" : "password"}
+                className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
+                placeholder=" "
+              />
+              <span
+                onClick={() =>
+                  setShowPassword((prev) => ({
+                    ...prev,
+                    password: !prev.password,
+                  }))
+                }
+                className="absolute inset-y-0 right-3 flex cursor-pointer items-center px-2 text-gray-500"
+              >
+                {showPassword.password ? (
+                  <MdOutlineRemoveRedEye />
+                ) : (
+                  <FaRegEyeSlash />
+                )}
+              </span>
+              <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
+                <LuLockKeyhole /> Password
+              </label>
+            </div>
+            <Error error={errors?.password?.message} />
+          </div>
+
+          <div className="mb-6">
+            <div className="relative">
+              <input
+                {...register("confirmPassword", {
+                  required: "This field is required",
+                  validate: (value) =>
+                    value === getValues().password || "Passwords need to match",
+                })}
+                type={showPassword.confirmPassword ? "text" : "password"}
+                className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
+                placeholder=" "
+              />
+              <span
+                onClick={() =>
+                  setShowPassword((prev) => ({
+                    ...prev,
+                    confirmPassword: !prev.confirmPassword,
+                  }))
+                }
+                className="absolute inset-y-0 right-3 flex cursor-pointer items-center px-2 text-gray-500"
+              >
+                {showPassword.confirmPassword ? (
+                  <MdOutlineRemoveRedEye />
+                ) : (
+                  <FaRegEyeSlash />
+                )}
+              </span>
+              <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
+                <LuLockKeyhole />
+                Confirm Password
+              </label>
+            </div>
+            <Error error={errors?.confirmPassword?.message} />
+          </div>
+
           <button
-            onClick={handleSendOtp}
-            className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
-            disabled={loading}
+            type="submit"
+            disabled={isUpdating}
+            className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed sm:py-4 lg:font-bold"
           >
-            {loading ? "Sending..." : "Send OTP"}
+            {true ? "Resetting password..." : "Reset Password"}
           </button>
-        </>
-      )}
-
-      {step === 2 && (
-        <>
-          <label className="mb-2 block font-semibold">OTP</label>
-          <input
-            type="text"
-            className="mb-4 w-full rounded border px-3 py-2"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
-
-          <label className="mb-2 block font-semibold">New Password</label>
-          <input
-            type="password"
-            className="mb-4 w-full rounded border px-3 py-2"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-
-          <button
-            onClick={handleVerifyOtp}
-            className="w-full rounded bg-green-600 py-2 text-white hover:bg-green-700"
-            disabled={loading}
-          >
-            {loading ? "Verifying..." : "Reset Password"}
-          </button>
-        </>
-      )}
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default PasswordrecoveryPage;

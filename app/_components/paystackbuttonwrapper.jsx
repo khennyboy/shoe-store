@@ -23,6 +23,10 @@ export default function PaystackButtonWrapper({
     text: `${formatCurrency(amount)} Pay Now`,
     onSuccess: () => alert("Payment Successful!"),
     onClose: () => alert("Payment Closed"),
+    onError: (error) => {
+      // Not officially supported by Paystack, but you can track errors yourself
+      console.error("Payment Error", error);
+    }
   };
 
   // Don't render button unless required fields are present

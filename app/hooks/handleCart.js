@@ -46,12 +46,8 @@ export default function useHandleCart() {
   };
 
   const totalPrice = mainContext.productCarted
-  .map(
-    (each) =>
-      each.quantity * (each.price * ((100 - each.discount) / 100))
-  )
-  .reduce((total, value) => total + value, 0);
-
+    .map((each) => each.quantity * (each.price * ((100 - each.discount) / 100)))
+    .reduce((total, value) => total + value, 0);
 
   return { handleAddToCart, handleQuantity, handleDeleteCart, totalPrice };
 }
