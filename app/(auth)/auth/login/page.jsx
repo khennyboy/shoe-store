@@ -111,7 +111,7 @@ export default function Login() {
 
           <div className="mt-4 flex justify-between text-sm text-orange-400">
             <Link
-              href="/passwordrecovery"
+              href="/password-recovery"
               className="transition-all duration-200 ease-linear hover:text-orange-500"
             >
               Forgot password?

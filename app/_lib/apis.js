@@ -115,16 +115,19 @@ export async function getCurrentUser() {
   }
 }
 
-export async function updateUser({ email, password }) {
+export async function updateUser({ email }) {
   try {
-    const { data, error } = await supabase.auth.updateUser({
-      email: email,
-      password: password,
-    });
+    const {data, error} = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://shoe-store-ashy-two.vercel.app/auth/update-password',
+    })
+        
     if (error) throw new Error(error.message);
     return data;
   } catch (error) {
-    throw error;
     console.error(error);
+    throw error;
   }
 }
+
+
+// https://shoe-store-ashy-two.vercel.app/

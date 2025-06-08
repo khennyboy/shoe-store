@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { LuLockKeyhole, LuMail } from "react-icons/lu";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const PasswordrecoveryPage = () => {
   const router = useRouter();
@@ -67,79 +68,14 @@ const PasswordrecoveryPage = () => {
             <Error error={errors?.email?.message} />
           </div>
 
-          <div className="mb-6">
-            <div className="relative">
-              <input
-                {...register("password", {
-                  required: "This field is required",
-                })}
-                type={showPassword.password ? "text" : "password"}
-                className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
-                placeholder=" "
-              />
-              <span
-                onClick={() =>
-                  setShowPassword((prev) => ({
-                    ...prev,
-                    password: !prev.password,
-                  }))
-                }
-                className="absolute inset-y-0 right-3 flex cursor-pointer items-center px-2 text-gray-500"
-              >
-                {showPassword.password ? (
-                  <MdOutlineRemoveRedEye />
-                ) : (
-                  <FaRegEyeSlash />
-                )}
-              </span>
-              <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
-                <LuLockKeyhole /> Password
-              </label>
-            </div>
-            <Error error={errors?.password?.message} />
-          </div>
-
-          <div className="mb-6">
-            <div className="relative">
-              <input
-                {...register("confirmPassword", {
-                  required: "This field is required",
-                  validate: (value) =>
-                    value === getValues().password || "Passwords need to match",
-                })}
-                type={showPassword.confirmPassword ? "text" : "password"}
-                className="z-10 w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
-                placeholder=" "
-              />
-              <span
-                onClick={() =>
-                  setShowPassword((prev) => ({
-                    ...prev,
-                    confirmPassword: !prev.confirmPassword,
-                  }))
-                }
-                className="absolute inset-y-0 right-3 flex cursor-pointer items-center px-2 text-gray-500"
-              >
-                {showPassword.confirmPassword ? (
-                  <MdOutlineRemoveRedEye />
-                ) : (
-                  <FaRegEyeSlash />
-                )}
-              </span>
-              <label className="pointer-events-none absolute top-1/2 left-3 flex -translate-y-1/2 items-center gap-2 text-gray-500">
-                <LuLockKeyhole />
-                Confirm Password
-              </label>
-            </div>
-            <Error error={errors?.confirmPassword?.message} />
-          </div>
+          
 
           <button
             type="submit"
             disabled={isUpdating}
             className="bg-dark-orange ring-dark-orange hover:bg-dark-orange/80 mb-2 block w-full cursor-pointer rounded-md py-3 text-center text-sm font-semibold text-white ring-offset-2 ring-offset-white transition-all duration-200 ease-linear focus:ring-1 disabled:cursor-not-allowed sm:py-4 lg:font-bold"
           >
-            {true ? "Resetting password..." : "Reset Password"}
+            {isUpdating ? "Resetting password..." : "Reset Password"}
           </button>
         </form>
       </div>
