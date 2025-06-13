@@ -1,21 +1,35 @@
 import { toast } from "react-toastify";
+import emailjs from "@emailjs/browser";
+import supabase from "@/app/_lib/supabase";
 
 export async function sendOtpEmail(email) {
+  console.log(email)
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  const expires_at = new Date(Date.now() + 5 * 60 * 1000);
+
   try {
-    const res = await fetch("/api/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
+    const [dbResponse, emailResponse] = await Promise.all([
+      supabase.from("email_otps").insert([{ email, otp, expires_at }]),
+      emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        { to_email: email, code: otp },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+      ),
+    ]);
 
-    const data = await res.json();
-    if (!res.ok || data.success === false) {
-      throw new Error(data.error || "Error generating OTP");
+    if (dbResponse.error) {
+      throw new Error(`Error: ${dbResponse.error.message}`);
     }
-
-    return data;
-  } catch (err) {
-    throw err;
+    if (
+      !emailResponse ||
+      (emailResponse.status && emailResponse.status !== 200)
+    ) {
+      throw new Error("Failed to send OTP email.");
+    }
+  } catch (error) {
+    console.error("sendOtpEmail error:", error);
+    throw error;
   }
 }
 
