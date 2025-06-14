@@ -9,13 +9,13 @@ import minus from "@/public/icon-minus.svg";
 import plus from "@/public/icon-plus.svg";
 import { formatCurrency } from "../utils/helpers";
 
-export default function AllProduct({ product }) {
+export default function AllProduct({ products }) {
   const { handleAddToCart, handleQuantity } = useHandleCart();
   const mainContext = useContext(cartedProducts);
 
   return (
     <>
-      {product?.map((each) => {
+      {products?.map((each) => {
         const isInCart = mainContext.productCarted.find(
           (eachCart) => eachCart.id === each.id,
         );

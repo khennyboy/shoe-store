@@ -8,6 +8,9 @@ import { FaRegAddressBook } from "react-icons/fa6";
 import { LuMail } from "react-icons/lu";
 import { PiPhoneOutgoingThin } from "react-icons/pi";
 import { SiNamecheap } from "react-icons/si";
+import { userProfile } from "../_lib/apis";
+import { useUser } from "../hooks/handleUser";
+
 
 const PaystackButtonWrapper = dynamic(
   () => import("@/app/_components/paystackbuttonwrapper"),
@@ -15,16 +18,17 @@ const PaystackButtonWrapper = dynamic(
 );
 
 export default function Payment() {
-
   const router = useRouter();
+  const { user } = useUser();
+  console.log(user);
+  const { data } = userProfile(user.user.id);
+  console.log(data);
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
     phoneNumber: "",
     address: "",
   });
-
-
 
   const { totalPrice: amount } = useHandleCart();
   const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "";
@@ -36,12 +40,11 @@ export default function Payment() {
           Payment Details
         </h2>
 
-        {/* Full Name */}
         <div className="mb-6">
           <div className="relative">
             <input
               type="text"
-              value={userDetails.name}
+              value={data?.user.fullname || userDetails.name}
               onChange={(e) =>
                 setUserDetails((prev) => ({ ...prev, name: e.target.value }))
               }
@@ -59,7 +62,7 @@ export default function Payment() {
           <div className="relative">
             <input
               type="email"
-              value={userDetails.email}
+              value={data?.user.email || userDetails.email}
               onChange={(e) =>
                 setUserDetails((prev) => ({ ...prev, email: e.target.value }))
               }
@@ -77,7 +80,7 @@ export default function Payment() {
           <div className="relative">
             <input
               type="text"
-              value={userDetails.phoneNumber}
+              value={data?.phoneNumber || userDetails.phoneNumber}
               onChange={(e) =>
                 setUserDetails((prev) => ({
                   ...prev,
@@ -98,7 +101,7 @@ export default function Payment() {
           <div className="relative">
             <input
               type="text"
-              value={userDetails.address}
+              value={data?.address || userDetails.address}
               onChange={(e) =>
                 setUserDetails((prev) => ({
                   ...prev,
@@ -114,7 +117,6 @@ export default function Payment() {
           </div>
         </div>
 
-        {/* Paystack Button */}
         <PaystackButtonWrapper
           email={userDetails.email}
           amount={amount}
@@ -123,6 +125,7 @@ export default function Payment() {
           publicKey={publicKey}
           address={userDetails.address}
         />
+
       </div>
     </div>
   );

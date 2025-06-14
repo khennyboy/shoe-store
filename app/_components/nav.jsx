@@ -1,16 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useCallback,  useContext,  useEffect,  useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { CgAdidas } from "react-icons/cg";
+import { GrClose, GrMenu } from "react-icons/gr";
+import { SiNike, SiPuma } from "react-icons/si";
+import useNav from "../hooks/navhooks";
 import Cart from "./cart";
 import Login from "./loginlogout";
-import useNav from "../hooks/navhooks";
 import Profile from "./profile";
-import { GrClose, GrMenu } from "react-icons/gr";
-import { SiNike } from "react-icons/si";
-import { SiPuma } from "react-icons/si";
-import { CgAdidas } from "react-icons/cg";
-import { cartedProducts } from "./queryClient";
 
 const navLinks = [
   { name: "Collections", path: "/" },

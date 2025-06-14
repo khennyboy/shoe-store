@@ -1,12 +1,26 @@
+import { PAGE_SIZE } from "../utils/constant";
 import supabase from "./supabase";
 
-export async function getProducts() {
+export async function getProducts({filter, page}) {
   try {
-    let { data, error } = await supabase.from("products").select("*");
-    if (error) {
-      throw new Error(`${error.message}`);
+    let query=  supabase.from("products").select("*", {
+      count: 'exact'
+    });
+   
+    if(filter!=='all') {
+      query = query.eq('name', filter)
     }
-    return data;
+    
+    if(page){
+      const from = (page-1) * PAGE_SIZE
+      const to = from + PAGE_SIZE -1
+      query = query.range(from , to)
+    }
+    let {data, error, count} = await query;
+    if(error){
+      throw new Error("Products could not be loaded");
+    }
+    return {data, count};
   } catch (error) {
     throw error;
   }
@@ -117,10 +131,10 @@ export async function getCurrentUser() {
 
 export async function updateUser({ email }) {
   try {
-    const {data, error} = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://shoe-store-ashy-two.vercel.app/auth/update-password',
-    })
-        
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://shoe-store-ashy-two.vercel.app/auth/update-password",
+    });
+
     if (error) throw new Error(error.message);
     return data;
   } catch (error) {
@@ -129,5 +143,37 @@ export async function updateUser({ email }) {
   }
 }
 
+export async function userProfile(userId) {
+  console.log(userId);
+  try {
+    let { data, error } = await supabase
+      .from("user_profiles")
+      .select(
+        `address, 'phoneNumber', user(
+        fullname,
+        email
+        `,
+      )
+      .eq("user", userId)
+      .single();
+    if (error) throw new Error(error.message);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-// https://shoe-store-ashy-two.vercel.app/
+export async function saveUserData({ type, phoneNumber, address }) {
+  let query = supabase.from("user_profiles");
+  if (type == "phoneNumber") {
+    query.insert([{ phoneNumber }]);
+  }
+  if (type == "address") {
+    query.insert([{ address }]);
+  }
+  const { data, error } = await query.select();
+  if (error) {
+    throw new Error(error.message);
+  }
+  console.log(data)
+}

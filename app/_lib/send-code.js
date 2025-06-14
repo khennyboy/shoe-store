@@ -3,7 +3,6 @@ import emailjs from "@emailjs/browser";
 import supabase from "@/app/_lib/supabase";
 
 export async function sendOtpEmail(email) {
-  console.log(email)
   const otp = Math.floor(1000 + Math.random() * 9000);
   const expires_at = new Date(Date.now() + 5 * 60 * 1000);
 

@@ -1,49 +1,66 @@
+import { createClient } from "@supabase/supabase-js";
+import EmailJS from "@emailjs/nodejs"; // Only works on the server
 import { NextResponse } from "next/server";
-import crypto from "crypto";
 
-const PAYSTACK_SECRET_KEY = process.env.NEXT_PUBLIC_PAYSTACK_SECRET_KEY || "";
+// Initialize Supabase client (server-side)
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY // Full access
+);
+
+// Webhook secret (from Paystack dashboard)
+const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY;
 
 export async function POST(req) {
-  const rawBody = await req.text();
-  const paystackSignature = req.headers.get("x-paystack-signature");
+  try {
+    const body = await req.json();
 
-  const hash = crypto
-    .createHmac("sha512", PAYSTACK_SECRET_KEY)
-    .update(rawBody)
-    .digest("hex");
+    // Verify Paystack event
+    const event = body?.event;
+    const data = body?.data;
 
-  if (hash !== paystackSignature) {
-    return new NextResponse("Invalid signature", { status: 403 });
+    if (event !== "charge.success") {
+      return NextResponse.json({ status: "Ignored non-success event" });
+    }
+
+    // Extract values
+    const email = data.customer.email;
+    const amount = data.amount / 100; // Convert to Naira
+    const reference = data.reference;
+
+    // You can attach productId or metadata when you initiate the payment
+    const metadata = data.metadata || {};
+    const productId = metadata.productId;
+
+    // Save to orders table
+    const { error: orderError } = await supabase.from("orders").insert([
+      {
+        user: metadata.userId, // You should attach this in metadata
+        product: productId,
+        address: metadata.address,
+        received: false,
+      },
+    ]);
+
+    if (orderError) {
+      console.error("Failed to save order:", orderError.message);
+      return NextResponse.json({ status: "error saving order" }, { status: 500 });
+    }
+
+    // Send email using EmailJS
+    await EmailJS.send(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+      {
+        to_email: email,
+        code: `Order Summary:\nProduct: ${metadata.productName}\nPrice: ₦${amount}\nDelivery: Within 3-5 days`,
+      },
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    );
+
+    return NextResponse.json({ status: "Webhook processed successfully" });
+  } catch (err) {
+    console.error("Webhook error:", err.message);
+    return NextResponse.json({ error: "Webhook failed" }, { status: 500 });
   }
-
-  const event = JSON.parse(rawBody);
-
-  console.log("Paystack webhook event:", event);
-
-  switch (event.event) {
-    case "charge.success":
-      console.log("✅ Payment succeeded:", event.data);
-      break;
-
-    case "invoice.payment_failed":
-      console.log("❌ Payment failed:", event.data);
-      break;
-
-    case "charge.cancelled":
-      console.log("⚠️ User canceled the payment or closed modal.");
-      break;
-
-    default:
-      console.log("ℹ️ Unhandled event:", event.event);
-  }
-  return NextResponse.json({ message: "OK" }, { status: 200 });
 }
-
-export async function GET(req) {
-  return NextResponse.json(
-    { success: false, error: `Failed to send email` },
-    { status: 500 },
-  );
-}
-
-
