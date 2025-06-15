@@ -8,9 +8,9 @@ import { FaRegAddressBook } from "react-icons/fa6";
 import { LuMail } from "react-icons/lu";
 import { PiPhoneOutgoingThin } from "react-icons/pi";
 import { SiNamecheap } from "react-icons/si";
-import { userProfile } from "../_lib/apis";
 import { useUser } from "../hooks/handleUser";
-
+import useProfile from "../hooks/handleProfile";
+import { saveUserData } from "../_lib/apis";
 
 const PaystackButtonWrapper = dynamic(
   () => import("@/app/_components/paystackbuttonwrapper"),
@@ -21,8 +21,9 @@ export default function Payment() {
   const router = useRouter();
   const { user } = useUser();
   console.log(user);
-  const { data } = userProfile(user.user.id);
+  const { data } = useProfile(user.user.id);
   console.log(data);
+
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
@@ -44,7 +45,7 @@ export default function Payment() {
           <div className="relative">
             <input
               type="text"
-              value={data?.user.fullname || userDetails.name}
+              value={data?.user.meta_data.fullname || userDetails.name}
               onChange={(e) =>
                 setUserDetails((prev) => ({ ...prev, name: e.target.value }))
               }
@@ -81,12 +82,11 @@ export default function Payment() {
             <input
               type="text"
               value={data?.phoneNumber || userDetails.phoneNumber}
-              onChange={(e) =>
-                setUserDetails((prev) => ({
-                  ...prev,
-                  phoneNumber: e.target.value,
-                }))
-              }
+              onChange={(e) => {
+                const value = e.target.value;
+                setUserDetails((prev) => ({ ...prev, phoneNumber: value }));
+                saveUserData({ type: "phoneNumber", phoneNumber: value });
+              }}
               className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
             />
@@ -102,12 +102,11 @@ export default function Payment() {
             <input
               type="text"
               value={data?.address || userDetails.address}
-              onChange={(e) =>
-                setUserDetails((prev) => ({
-                  ...prev,
-                  address: e.target.value,
-                }))
-              }
+              onChange={(e) => {
+                const value = e.target.value;
+                setUserDetails((prev) => ({ ...prev, address: value }));
+                debouncedSaveUserData({ type: "address", address: value });
+              }}
               className="z-10 block w-full rounded-md border-1 border-orange-300 px-2 py-3 outline-none focus:border-2 focus:border-orange-500"
               placeholder=" "
             />
@@ -125,7 +124,6 @@ export default function Payment() {
           publicKey={publicKey}
           address={userDetails.address}
         />
-
       </div>
     </div>
   );

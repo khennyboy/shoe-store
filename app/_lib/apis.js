@@ -1,26 +1,27 @@
+import { debounce } from "lodash";
 import { PAGE_SIZE } from "../utils/constant";
 import supabase from "./supabase";
 
-export async function getProducts({filter, page}) {
+export async function getProducts({ filter, page }) {
   try {
-    let query=  supabase.from("products").select("*", {
-      count: 'exact'
+    let query = supabase.from("products").select("*", {
+      count: "exact",
     });
-   
-    if(filter!=='all') {
-      query = query.eq('name', filter)
+
+    if (filter !== "all") {
+      query = query.eq("name", filter);
     }
-    
-    if(page){
-      const from = (page-1) * PAGE_SIZE
-      const to = from + PAGE_SIZE -1
-      query = query.range(from , to)
+
+    if (page) {
+      const from = (page - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      query = query.range(from, to);
     }
-    let {data, error, count} = await query;
-    if(error){
+    let { data, error, count } = await query;
+    if (error) {
       throw new Error("Products could not be loaded");
     }
-    return {data, count};
+    return { data, count };
   } catch (error) {
     throw error;
   }
@@ -143,37 +144,46 @@ export async function updateUser({ email }) {
   }
 }
 
-export async function userProfile(userId) {
-  console.log(userId);
+export async function getUserProfile(id) {
+  console.log(id);
   try {
     let { data, error } = await supabase
       .from("user_profiles")
       .select(
-        `address, 'phoneNumber', user(
-        fullname,
-        email
+        `
+        address,
+        phoneNumber,
+        user (
+          fullName,
+          email
+        )
         `,
       )
-      .eq("user", userId)
+      .eq("user", id)
       .single();
+
     if (error) throw new Error(error.message);
     return data;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 }
 
-export async function saveUserData({ type, phoneNumber, address }) {
-  let query = supabase.from("user_profiles");
-  if (type == "phoneNumber") {
-    query.insert([{ phoneNumber }]);
+export const saveUserData = debounce(async ({ type, phoneNumber, address }) => {
+  try {
+    let query = supabase.from("user_profiles");
+
+    if (type === "phoneNumber") {
+      query = query.insert([{ phoneNumber }]);
+    } else if (type === "address") {
+      query = query.insert([{ address }]);
+    }
+
+    const { data, error } = await query.select();
+    if (error) throw new Error(error.message);
+    console.log("Saved successfully:", data);
+  } catch (error) {
+    console.error("Error saving data:", error.message);
   }
-  if (type == "address") {
-    query.insert([{ address }]);
-  }
-  const { data, error } = await query.select();
-  if (error) {
-    throw new Error(error.message);
-  }
-  console.log(data)
-}
+}, 500);

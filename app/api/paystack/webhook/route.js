@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import EmailJS from "@emailjs/nodejs"; // Only works on the server
+import emailjs from '@emailjs/browser';
 import { NextResponse } from "next/server";
 
 // Initialize Supabase client (server-side)
@@ -48,7 +48,7 @@ export async function POST(req) {
     }
 
     // Send email using EmailJS
-    await EmailJS.send(
+    await emailjs.send(
       process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
       process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
       {
