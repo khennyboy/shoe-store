@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useUser } from "../hooks/handleUser";
 import emailjs from "@emailjs/browser";
 import Link from "next/link";
 import useHandleCart from "@/app/hooks/handleCart";
 import { formatCurrency } from "@/app/utils/helpers";
+import { useUser } from "@/app/hooks/handleUser";
 
 export default function PaymentSuccessPage() {
   const searchParams = useSearchParams();
