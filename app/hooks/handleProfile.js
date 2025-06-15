@@ -3,12 +3,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../_lib/apis";
 
-export default function useProfile() {
-  const { data, isPending, error, isError, isSuccess } = useQuery({
+export default function useProfile(id) {
+  const { data: profile, isPending, error, isError, isSuccess } = useQuery({
     queryKey: ["userProfile"],
-    queryFn: getUserProfile,
+    queryFn: () => getUserProfile(id),
     retry: false,
   });
 
-  return { data, isPending, error, isError, isSuccess };
+  return { profile, isPending, error, isError, isSuccess };
 }

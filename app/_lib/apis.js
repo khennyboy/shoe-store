@@ -145,45 +145,60 @@ export async function updateUser({ email }) {
 }
 
 export async function getUserProfile(id) {
-  console.log(id);
   try {
-    let { data, error } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from("user_profiles")
-      .select(
-        `
-        address,
-        phoneNumber,
-        user (
-          fullName,
-          email
-        )
-        `,
-      )
+      .select("*")
       .eq("user", id)
       .single();
 
-    if (error) throw new Error(error.message);
-    return data;
+    if (profileError) throw new Error(profileError.message);
+
+    return profile;
   } catch (error) {
-    console.error(error);
+    console.error("Failed to get user profile:", error.message);
     throw error;
   }
 }
 
-export const saveUserData = debounce(async ({ type, phoneNumber, address }) => {
-  try {
-    let query = supabase.from("user_profiles");
+export const saveUserData = debounce(
+  async ({ type, phone_number = null, address = null, id }) => {
+    try {
+      let updateData = {};
 
-    if (type === "phoneNumber") {
-      query = query.insert([{ phoneNumber }]);
-    } else if (type === "address") {
-      query = query.insert([{ address }]);
+      if (type === "phone_number") {
+        updateData.phone_number = phone_number;
+      } else if (type === "address") {
+        updateData.address = address;
+      }
+
+      const { data, error } = await supabase
+        .from("user_profiles")
+        .update(updateData)
+        .eq("user", id)
+        .select();
+
+      if (error) throw new Error(error.message);
+
+      console.log("Updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating data:", error.message);
     }
+  },
+  1000,
+);
 
-    const { data, error } = await query.select();
-    if (error) throw new Error(error.message);
-    console.log("Saved successfully:", data);
-  } catch (error) {
-    console.error("Error saving data:", error.message);
+export const updateUserName = debounce(async (updated_name) => {
+  const { data, error } = await supabase.auth.updateUser({
+    data: {
+      display_name: updated_name,
+    },
+  });
+
+  if (error) {
+    console.error("Error updating display name:", error);
+    throw new Error(error.message);
+  } else {
+    console.log("Display name updated successfully:", data);
   }
-}, 500);
+}, 1000);

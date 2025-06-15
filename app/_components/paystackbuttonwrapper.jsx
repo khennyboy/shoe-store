@@ -2,22 +2,28 @@
 
 import { PaystackButton } from "react-paystack";
 import { formatCurrency } from "../utils/helpers";
+import { useUser } from "../hooks/handleUser";
+import useProfile from "../hooks/handleProfile";
+import { useRouter } from "next/navigation";
 
 export default function PaystackButtonWrapper({
-  email,
   amount,
-  name,
-  phone,
-  address,
   publicKey,
+  email,
+  phone_number,
+  name,
+  address,
 }) {
+  const { user } = useUser();
+  const { profile } = useProfile(user.user.id);
+  const router = useRouter()
   const componentProps = {
-    email,
+    email: user.user.email,
     amount: Number(amount) * 100,
     metadata: {
-      name,
-      phone,
-      address,
+      name: user?.user.user_metadata.full_name,
+      phone_number: profile?.phone_number,
+      address: profile?.address,
     },
     publicKey,
     text: `${formatCurrency(amount)} Pay Now`,
@@ -27,7 +33,7 @@ export default function PaystackButtonWrapper({
     onClose: () => alert("Payment Closed"),
   };
 
-  if (!email || !amount || !name || !address) return null;
+  if (!email || !phone_number || !name || !address) return null;
 
   return (
     <PaystackButton
