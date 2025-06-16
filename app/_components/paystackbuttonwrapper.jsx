@@ -5,11 +5,10 @@ import { formatCurrency } from "../utils/helpers";
 import { useUser } from "../hooks/handleUser";
 import useProfile from "../hooks/handleProfile";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
-import React from "react";
 
-function PaystackButtonWrapperComponent({
+export default function PaystackButtonWrapper({
   amount,
   publicKey,
   email,
@@ -19,33 +18,27 @@ function PaystackButtonWrapperComponent({
 }) {
   const { user } = useUser();
   const { profile } = useProfile(user.user.id);
-  const router = useRouter();
-  const toastShown = useRef(false);
-
-  const componentProps = useMemo(() => {
-    return {
-      email: user.user.email,
-      amount: Number(amount) * 100,
-      metadata: {
-        name: user?.user.user_metadata.full_name,
-        phone_number: profile?.phone_number,
-        address: profile?.address,
-      },
-      publicKey,
-      text: `${formatCurrency(amount)} Pay Now`,
-      onSuccess: (response) => {
-        router.push(`/payment/success?reference=${response.reference}`);
-      },
-      onClose: () => alert("Payment Closed"),
-    };
-  }, [amount, publicKey, profile, router, user]);
-
-  useEffect(() => {
-    if (Number(amount) <= 0 && !toastShown.current) {
-      toast.error("No carted products yet");
-      toastShown.current = true;
-    }
-  }, [amount]);
+  const router = useRouter()
+  const componentProps = {
+    email: user.user.email,
+    amount: Number(amount) * 100,
+    metadata: {
+      name: user?.user.user_metadata.full_name,
+      phone_number: profile?.phone_number,
+      address: profile?.address,
+    },
+    publicKey,
+    text: `${formatCurrency(amount)} Pay Now`,
+    onSuccess: (response) => {
+      router.push(`/payment/success?reference=${response.reference}`);
+    },
+    onClose: () => alert("Payment Closed"),
+  };
+  // useEffect(()=>{
+  //   if(Number(amount)<0){
+  //     toast.error('No carted products yet')
+  //   }
+  // },[])
 
   if (!email || !phone_number || !name || !address || !amount) return null;
 
@@ -58,6 +51,3 @@ function PaystackButtonWrapperComponent({
 }
 
 
-const PaystackButtonWrapper = React.memo(PaystackButtonWrapperComponent);
-
-export default PaystackButtonWrapper;
