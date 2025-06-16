@@ -16,7 +16,7 @@ export default function PaymentSuccessPage() {
   const { totalPrice } = useHandleCart();
   const { user, isLoading } = useUser();
   const [status, setStatus] = useState("verifying");
- 
+
   useEffect(() => {
     async function verifyPayment() {
       if (!reference || (!user && !isLoading)) {
@@ -26,7 +26,7 @@ export default function PaymentSuccessPage() {
 
       try {
         const cartedProducts = JSON.parse(
-          localStorage.getItem("cartedProduct") || "[]",
+          localStorage.getItem("cartedProduct") || "[]"
         );
 
         const res = await fetch("/api/payment/verify", {
@@ -40,27 +40,32 @@ export default function PaymentSuccessPage() {
         });
 
         const json = await res.json();
-        if (res.ok) {
-          const orderSummary = cartedProducts
-            .map(
-              (p) =>
-                `• ${p.name} × ${p.quantity} x ${p.price * ((100 - p.discount) / 100)}`,
-            )
-            .join("\n");
 
-          await emailjs.send(
-            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-            process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID2,
-            {
-              to_email: user.user.email,
-              full_name: user?.user.user_metadata.full_name,
-              order_details: `🧾 Order Summary:\n${orderSummary}\n\nTotal: ${formatCurrency(
-                totalPrice,
-              )}`,
-            },
-            process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-          );
-          setStatus("success")
+        if (res.ok) {
+          // ✅ Only send email if it’s a new order
+          if (!json.alreadyProcessed) {
+            const orderSummary = cartedProducts
+              .map(
+                (p) =>
+                  `• ${p.name} × ${p.quantity} x ${p.price * ((100 - p.discount) / 100)}`
+              )
+              .join("\n");
+
+            await emailjs.send(
+              process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+              process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID2,
+              {
+                to_email: user.user.email,
+                full_name: user?.user.user_metadata.full_name,
+                order_details: `🧾 Order Summary:\n${orderSummary}\n\nTotal: ${formatCurrency(
+                  totalPrice
+                )}`,
+              },
+              process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+            );
+          }
+
+          setStatus("success");
           localStorage.removeItem("cartedProduct");
         } else {
           console.error(json.error);
@@ -71,12 +76,13 @@ export default function PaymentSuccessPage() {
         setStatus("error");
       }
     }
+
     const timeout = setTimeout(() => {
       verifyPayment();
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [reference, searchParams, user]);
+  }, [reference, searchParams, user, isLoading]);
 
   return (
     <AuthGuard>
@@ -113,7 +119,7 @@ export default function PaymentSuccessPage() {
               href="/payment"
               className="bg-dark-orange inline-block rounded-md px-5 py-2 text-white shadow transition duration-200 hover:bg-gray-700"
             >
-              Go back to homepage
+              Try Again
             </Link>
           </div>
         )}

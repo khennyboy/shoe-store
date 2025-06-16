@@ -4,7 +4,6 @@ import useHandleCart from "@/app/hooks/handleCart";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { FaRegAddressBook } from "react-icons/fa6";
-import { LuMail } from "react-icons/lu";
 import { PiPhoneOutgoingThin } from "react-icons/pi";
 import { SiNamecheap } from "react-icons/si";
 import { useUser } from "../hooks/handleUser";

@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUser } from "@/app/hooks/handleUser";
@@ -8,15 +9,16 @@ export default function AuthGuard({ children }) {
   const { user, isLoading } = useUser();
   const router = useRouter();
 
-  const shouldRedirect = !isLoading && !user;
+  const isUserReady = !!user?.user.id; 
+  const isChecking = isLoading || !isUserReady;
 
   useEffect(() => {
-    if (shouldRedirect) {
+    if (!isChecking && !user) {
       router.push("/auth/login/?redirect=payment");
     }
-  }, [shouldRedirect, router]);
+  }, [isChecking, user, router]);
 
-  if (isLoading || shouldRedirect) return <Loader />;
+  if (isChecking) return <Loader />;
 
   return <>{children}</>;
 }

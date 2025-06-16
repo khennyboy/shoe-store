@@ -5,8 +5,11 @@ import { formatCurrency } from "../utils/helpers";
 import { useUser } from "../hooks/handleUser";
 import useProfile from "../hooks/handleProfile";
 import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef } from "react";
+import { toast } from "react-toastify";
+import React from "react";
 
-export default function PaystackButtonWrapper({
+function PaystackButtonWrapperComponent({
   amount,
   publicKey,
   email,
@@ -16,24 +19,35 @@ export default function PaystackButtonWrapper({
 }) {
   const { user } = useUser();
   const { profile } = useProfile(user.user.id);
-  const router = useRouter()
-  const componentProps = {
-    email: user.user.email,
-    amount: Number(amount) * 100,
-    metadata: {
-      name: user?.user.user_metadata.full_name,
-      phone_number: profile?.phone_number,
-      address: profile?.address,
-    },
-    publicKey,
-    text: `${formatCurrency(amount)} Pay Now`,
-    onSuccess: (response) => {
-      router.push(`/payment/success?reference=${response.reference}`);
-    },
-    onClose: () => alert("Payment Closed"),
-  };
+  const router = useRouter();
+  const toastShown = useRef(false);
 
-  if (!email || !phone_number || !name || !address) return null;
+  const componentProps = useMemo(() => {
+    return {
+      email: user.user.email,
+      amount: Number(amount) * 100,
+      metadata: {
+        name: user?.user.user_metadata.full_name,
+        phone_number: profile?.phone_number,
+        address: profile?.address,
+      },
+      publicKey,
+      text: `${formatCurrency(amount)} Pay Now`,
+      onSuccess: (response) => {
+        router.push(`/payment/success?reference=${response.reference}`);
+      },
+      onClose: () => alert("Payment Closed"),
+    };
+  }, [amount, publicKey, profile, router, user]);
+
+  useEffect(() => {
+    if (Number(amount) <= 0 && !toastShown.current) {
+      toast.error("No carted products yet");
+      toastShown.current = true;
+    }
+  }, [amount]);
+
+  if (!email || !phone_number || !name || !address || !amount) return null;
 
   return (
     <PaystackButton
@@ -44,3 +58,6 @@ export default function PaystackButtonWrapper({
 }
 
 
+const PaystackButtonWrapper = React.memo(PaystackButtonWrapperComponent);
+
+export default PaystackButtonWrapper;

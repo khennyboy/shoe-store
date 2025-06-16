@@ -10,6 +10,7 @@
   --color-black: hsl(0, 0%, 0%);
   --breakpoint-sm2: 320px;
   --text-eb: 1.05rem;
+  --color-backdrop-color: rgba(0, 0, 0, 0.3);
   @keyframes zoom {
     from {
       transform: scale(0);
