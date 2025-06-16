@@ -19,7 +19,7 @@ const PaystackButtonWrapper = dynamic(
 
 export default function Payment() {
   const { user } = useUser();
-  console.log(user);
+
   const { profile } = useProfile(user?.user.id);
 
   const [userDetails, setUserDetails] = useState({

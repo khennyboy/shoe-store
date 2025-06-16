@@ -41,7 +41,7 @@ export default function AllProduct({ products }) {
 
               <div>
                 <span className="block text-base leading-normal text-gray-800 lg:text-base">
-                  {each.name}-{each.id}
+                  {each.name}-{each.category}
                 </span>
                 <span className="block text-sm leading-tight font-semibold">
                   {formatCurrency(each.price * ((100 - each.discount) / 100))}

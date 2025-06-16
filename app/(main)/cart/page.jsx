@@ -29,7 +29,7 @@ export default function CartedItem() {
               />
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Explicabo earum quaerat officia... {each.id}
+                Explicabo earum quaerat officia
               </p>
               <div>
                 <div className="mb-2 block text-right text-sm font-semibold">

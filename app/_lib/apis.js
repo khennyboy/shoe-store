@@ -9,7 +9,7 @@ export async function getProducts({ filter, page }) {
     });
 
     if (filter !== "all") {
-      query = query.eq("name", filter);
+      query = query.eq("category", filter);
     }
 
     if (page) {

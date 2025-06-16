@@ -19,8 +19,9 @@ export default function HomePage() {
 
     if (loggedIn === "true") {
       toast.success("Login successful!");
-      const params = new URLSearchParams(searchParams);
-      params.delete("loggedIn");
+      const url = new URL(window.location.href);
+      url.searchParams.delete("loggedIn");
+      window.history.replaceState({}, '', url.pathname + url.search);
     }
     if (payment) {
       router.replace(`/payment`, { scroll: false });

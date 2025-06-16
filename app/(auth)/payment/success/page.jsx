@@ -1,25 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import AuthGuard from "@/app/_components/authguard";
+import useHandleCart from "@/app/hooks/handleCart";
+import { useUser } from "@/app/hooks/handleUser";
+import { formatCurrency } from "@/app/utils/helpers";
 import emailjs from "@emailjs/browser";
 import Link from "next/link";
-import useHandleCart from "@/app/hooks/handleCart";
-import { formatCurrencyForEmail } from "@/app/utils/helpers";
-import { useUser } from "@/app/hooks/handleUser";
-import AuthGuard from "@/app/_components/authguard";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function PaymentSuccessPage() {
   const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
   const reference = searchParams.get("reference");
   const { totalPrice } = useHandleCart();
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const [status, setStatus] = useState("verifying");
 
   useEffect(() => {
     async function verifyPayment() {
-      if (!reference) {
+      if (!reference || !user && !isLoading) {
         setStatus("error");
         return;
       }
@@ -34,16 +33,18 @@ export default function PaymentSuccessPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             reference,
-            userId: user.user.id,
+            userId: user?.user.id,
             products: cartedProducts,
           }),
         });
 
-                const json = await res.json();
-                if (res.ok) {
-      
+        const json = await res.json();
+        if (res.ok) {
           const orderSummary = cartedProducts
-            .map((p) => `• ${p.name} × ${p.quantity} x ${p.amount}`)
+            .map(
+              (p) =>
+                `• ${p.name} × ${p.quantity} x ${p.price * ((100 - p.discount) / 100)}`,
+            )
             .join("\n");
 
           await emailjs.send(
@@ -52,13 +53,15 @@ export default function PaymentSuccessPage() {
             {
               to_email: user.user.email,
               full_name: user?.user.user_metadata.full_name,
-              order_details: `🧾 Order Summary:\n${orderSummary}\n\nTotal: ${formatCurrencyForEmail(
+              order_details: `🧾 Order Summary:\n${orderSummary}\n\nTotal: ${formatCurrency(
                 totalPrice,
               )}`,
             },
             process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
           );
-          params.delete('reference')
+          const url = new URL(window.location.href);
+          url.searchParams.delete("reference");
+          window.history.replaceState({}, '', url.pathname + url.search);
           setStatus("success");
           localStorage.removeItem("cartedProduct");
         } else {
@@ -113,7 +116,7 @@ export default function PaymentSuccessPage() {
             </p>
             <Link
               href="/payment"
-              className="inline-block rounded-md bg-dark-orange px-5 py-2 text-white shadow transition duration-200 hover:bg-gray-700"
+              className="bg-dark-orange inline-block rounded-md px-5 py-2 text-white shadow transition duration-200 hover:bg-gray-700"
             >
               Go back to homepage
             </Link>
