@@ -12,6 +12,7 @@ export default function HomePage() {
   const searchParams = useSearchParams();
   const { products = [], isLoading, isError, error, count } = useProducts();
 
+
   useEffect(() => {
     const loggedIn = searchParams.get("loggedIn");
     const payment = searchParams.get("redirect");

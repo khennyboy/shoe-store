@@ -5,7 +5,6 @@ import { PAGE_SIZE } from "../utils/constant";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 export default function Pagination({ count }) {
-  console.log(count)
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();

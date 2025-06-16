@@ -10,8 +10,7 @@ import Link from "next/link";
 export default function CartedItem() {
   const mainContext = useContext(cartedProducts);
   const { handleDeleteCart, totalPrice, handleQuantity } = useHandleCart();
-  console.log(totalPrice, mainContext.productCarted);
- 
+   
   return (
     <div className="mx-auto grid max-w-4xl grid-cols-1 items-start gap-8 md:grid-cols-5">
       <div className="w-full max-w-lg space-y-4 justify-self-center rounded-lg bg-gray-100 px-2 py-8 md:col-span-3 md:px-4">

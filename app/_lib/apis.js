@@ -180,8 +180,7 @@ export const saveUserData = debounce(
 
       if (error) throw new Error(error.message);
 
-      console.log("Updated successfully:", data);
-    } catch (error) {
+          } catch (error) {
       console.error("Error updating data:", error.message);
     }
   },
@@ -199,6 +198,5 @@ export const updateUserName = debounce(async (updated_name) => {
     console.error("Error updating display name:", error);
     throw new Error(error.message);
   } else {
-    console.log("Display name updated successfully:", data);
-  }
+      }
 }, 1000);
