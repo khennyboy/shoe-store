@@ -9,16 +9,15 @@ export default function AuthGuard({ children }) {
   const { user, isLoading } = useUser();
   const router = useRouter();
 
-  const isUserReady = !!user?.user.id; 
-  const isChecking = isLoading || !isUserReady;
-
+  const isChecking = !isLoading && !user;
+ 
   useEffect(() => {
-    if (!isChecking && !user) {
+    if (!isLoading && !user) {
       router.push("/auth/login/?redirect=payment");
     }
-  }, [isChecking, user, router]);
+  }, [isLoading, user, router]);
 
-  if (isChecking) return <Loader />;
+  if (isLoading || isChecking) return <Loader />;
 
   return <>{children}</>;
 }

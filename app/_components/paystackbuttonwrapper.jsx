@@ -10,20 +10,16 @@ import { toast } from "react-toastify";
 
 export default function PaystackButtonWrapper({
   amount,
-  publicKey,
-  email,
-  phone_number,
-  name,
-  address,
+  publicKey
 }) {
   const { user } = useUser();
-  const { profile } = useProfile(user.user.id);
+  const { profile } = useProfile(user?.user.id);
   const router = useRouter()
   const componentProps = {
     email: user.user.email,
-    amount: Number(amount) * 100,
+    amount:10000 ,
     metadata: {
-      name: user?.user.user_metadata.full_name,
+      name: user?.user.user_metadata.display_name,
       phone_number: profile?.phone_number,
       address: profile?.address,
     },
@@ -34,13 +30,13 @@ export default function PaystackButtonWrapper({
     },
     onClose: () => alert("Payment Closed"),
   };
-  // useEffect(()=>{
-  //   if(Number(amount)<0){
-  //     toast.error('No carted products yet')
-  //   }
-  // },[])
+  useEffect(()=>{
+    if(Number(amount)<=0){
+      toast.error('No carted products yet')
+    }
+  },[])
 
-  if (!email || !phone_number || !name || !address || !amount) return null;
+  if (!user?.user.user_metadata.display_name || !profile?.phone_number || !user?.user.email || !profile?.address || !amount) return null;
 
   return (
     <PaystackButton
@@ -50,4 +46,4 @@ export default function PaystackButtonWrapper({
   );
 }
 
-
+// Number(amount) * 100

@@ -18,13 +18,14 @@ const PaystackButtonWrapper = dynamic(
 
 export default function Payment() {
   const { user } = useUser();
+  console.log(user)
   const { profile } = useProfile(user?.user.id);
-
+ 
   const [userDetails, setUserDetails] = useState({
-    name: '',
-    email: '',
-    phone_number: '',
-    address:'',
+    name: "",
+    email: "",
+    phone_number: "",
+    address: "",
   });
 
   const { totalPrice: amount } = useHandleCart();
@@ -33,7 +34,7 @@ export default function Payment() {
   useEffect(() => {
     if (user && profile) {
       setUserDetails({
-        name: user?.user?.user_metadata?.full_name || "",
+        name: user?.user?.user_metadata?.display_name || "",
         email: user?.user?.email || "",
         phone_number: profile?.phone_number || "",
         address: profile?.address || "",
@@ -122,14 +123,7 @@ export default function Payment() {
             </div>
           </div>
 
-          <PaystackButtonWrapper
-            email={userDetails.email}
-            amount={amount}
-            name={userDetails.name}
-            address={userDetails.address}
-            phone_number={userDetails.phone_number}
-            publicKey={publicKey}
-          />
+          <PaystackButtonWrapper amount={amount} publicKey={publicKey} />
         </div>
       </div>
     </AuthGuard>

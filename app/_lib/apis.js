@@ -192,11 +192,10 @@ export const updateUserName = debounce(async (updated_name) => {
     data: {
       display_name: updated_name,
     },
-  });
-
+  }).select();
+  console.log(data)
   if (error) {
     console.error("Error updating display name:", error);
     throw new Error(error.message);
-  } else {
-      }
+  } 
 }, 1000);

@@ -1,7 +1,7 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
