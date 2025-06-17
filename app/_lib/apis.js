@@ -93,6 +93,8 @@ export async function logoutUser() {
   }
 }
 
+
+
 export async function signInWithGoogle() {
   try {
     const searchParams = new URLSearchParams(window.location.search);
@@ -115,6 +117,9 @@ export async function signInWithGoogle() {
     throw error;
   }
 }
+
+
+
 
 export async function getCurrentUser() {
   try {

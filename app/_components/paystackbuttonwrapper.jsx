@@ -17,7 +17,7 @@ export default function PaystackButtonWrapper({
   const router = useRouter()
   const componentProps = {
     email: user.user.email,
-    amount:10000 ,
+    amount:Number(amount) * 100,
     metadata: {
       name: user?.user.user_metadata.display_name,
       phone_number: profile?.phone_number,
@@ -46,4 +46,3 @@ export default function PaystackButtonWrapper({
   );
 }
 
-// Number(amount) * 100
