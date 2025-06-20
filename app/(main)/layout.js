@@ -34,7 +34,7 @@ export default function MainLayout({ children }) {
             }}
           />
           <Nav />
-          <div className="mt-24 mb-16 px-4 md:mt-32 md:mb-[5rem] md:px-8 lg:mt-36 xl:px-12">
+          <div className="py-10 px-4 md:px-8  xl:px-12 min-h-screen">
             {children}
           </div>
 

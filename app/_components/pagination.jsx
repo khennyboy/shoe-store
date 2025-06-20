@@ -39,7 +39,7 @@ export default function Pagination({ count }) {
           onClick={prevPage}
           disabled={currentPage === 1}
           className={`flex aspect-square items-center justify-center bg-dark-orange text-sm font-medium text-white transition-all duration-200 ease-linear hover:bg-DarkOrange/70 ${
-            currentPage === 1 ? "cursor-not-allowed" : "cursor-pointer"
+            currentPage === 1 ? "cursor-not-allowed bg-dark-orange/50" : "cursor-pointer bg-dark-orange"
           }`}
         >
           <GrFormPrevious size={20} />
@@ -51,8 +51,8 @@ export default function Pagination({ count }) {
             disabled={currentPage === index + 1}
             className={`aspect-square text-sm font-medium text-white transition-all duration-200 ease-linear hover:bg-dark-orange ${
               currentPage === index + 1
-                ? "cursor-not-allowed bg-dark-orange"
-                : "cursor-pointer bg-dark-orange/50"
+                ? "cursor-not-allowed bg-dark-orange/50"
+                : "cursor-pointer bg-dark-orange"
             }`}
           >
             {index + 1}
@@ -61,8 +61,8 @@ export default function Pagination({ count }) {
         <button
           onClick={nextPage}
           disabled={currentPage === pageCount}
-          className={`flex aspect-square items-center justify-center bg-dark-orange text-sm font-medium text-white transition-all duration-200 ease-linear hover:bg-DarkOrange/70 ${
-            currentPage === pageCount ? "cursor-not-allowed" : "cursor-pointer"
+          className={`flex aspect-square items-center justify-center  text-sm font-medium text-white transition-all duration-200 ease-linear hover:bg-DarkOrange/70 ${
+            currentPage === pageCount ? "cursor-not-allowed bg-dark-orange/50" : "cursor-pointer bg-dark-orange"
           }`}
         >
           <GrFormNext size={20} />
