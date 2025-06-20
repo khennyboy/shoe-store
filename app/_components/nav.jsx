@@ -32,9 +32,9 @@ export default function Nav() {
   }, []);
 
   useNav({ openNav, setOpenNav, navRef });
-
+  
   const isActiveLink = (link) => {
-    const filter = searchParams.get("filter");
+    const filter = searchParams.get("filter") || '';
     return (
       (link.path === pathname && link.name !== "Collections") ||
       (link.name === "Collections" && !filter && link.path === pathname) ||
@@ -47,7 +47,7 @@ export default function Nav() {
   return (
     <nav
       ref={navRef}
-      className="sticky top-0 z-[1000] flex items-center gap-4 justify-between bg-white px-4 py-2 shadow-md md:px-8 md:py-0"
+      className="sticky top-0 z-[1000] flex items-center justify-between gap-4 bg-white px-4 py-2 shadow-md md:px-8 md:py-0"
       aria-label="Main navigation"
     >
       <button
@@ -55,20 +55,20 @@ export default function Nav() {
         aria-label={openNav ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={openNav}
         aria-controls="main-navigation"
-        className={`p-2 md:hidden cursor-pointer text-2xl ${openNav ? "fixed top-6 right-[40%] z-[150]" : "relative z-0"}`}
+        className={`cursor-pointer p-2 text-2xl md:hidden ${openNav ? "fixed top-6 right-[40%] z-[150]" : "relative z-0"}`}
       >
         {openNav ? <GrClose className="stroke-white" /> : <GrMenu />}
       </button>
 
-      <h1 className="text-xl font-bold flex-auto md:flex-initial">SoleMate</h1>
+      <h1 className="flex-auto text-xl font-bold md:flex-initial">SoleMate</h1>
 
       <ul
         id="main-navigation"
         className={`${
           openNav
-            ? "bg-dark-orange fixed top-0 left-0 z-[100] w-2/3  h-screen space-y-2 px-8 py-12 shadow-md"
-            : "w-0 h-0 overflow-hidden"
-        } transition-width duration-200 ease-linear md:relative md:w-auto md:h-auto md:flex md:items-center md:space-x-4 lg:space-x-8`}
+            ? "bg-dark-orange fixed top-0 left-0 z-[100] h-screen w-2/3 space-y-2 px-8 py-12 shadow-md"
+            : "h-0 w-0 overflow-hidden"
+        } transition-width duration-200 ease-linear md:relative md:flex md:h-auto md:w-auto md:items-center md:space-x-4 lg:space-x-8`}
         style={{ transformOrigin: "top center" }}
       >
         {navLinks.map((link, index) => {
@@ -78,7 +78,9 @@ export default function Nav() {
               <Link
                 href={link.path}
                 className={`flex items-center gap-1 py-2 transition-opacity duration-300 md:py-5 ${
-                  isActive ? "text-gray-200/80 md:text-dark-orange opacity-70" : "text-gray-200 md:text-black"
+                  isActive
+                    ? "md:text-dark-orange text-gray-200/80 opacity-70"
+                    : "text-gray-200 md:text-black"
                 } hover:opacity-100`}
                 onClick={() => {
                   if (openNav) setOpenNav(false);
