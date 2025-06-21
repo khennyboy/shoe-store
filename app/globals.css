@@ -22,14 +22,6 @@
   --animate-zoom: zoom 0.6s linear;
   --shadow-sm2: 0px 2px, 0px -2px, 2px 0px, -2px 0;
 }
-@keyframes come {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
-  }
-}
 
 .paginate::-webkit-scrollbar {
   height: 5px;
