@@ -11,7 +11,7 @@ import LogoutConfirmModal from "./loginconfirm";
 
 export default function Login() {
   const { user } = useUser();
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   const { logout, isLoggingOut, logoutError, isLogoutError, isLogoutSuccess } =
     useLoginLogout();
