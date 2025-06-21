@@ -16,7 +16,7 @@ export default function PaymentSuccessPage() {
   const { totalPrice } = useHandleCart();
   const { user, isLoading } = useUser();
   const [status, setStatus] = useState("verifying");
- 
+
   useEffect(() => {
     async function verifyPayment() {
       if (!reference || (!user && !isLoading)) {
@@ -60,7 +60,7 @@ export default function PaymentSuccessPage() {
             },
             process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
           );
-          setStatus("success")
+          setStatus("success");
           localStorage.removeItem("cartedProduct");
         } else {
           console.error(json.error);
@@ -111,7 +111,7 @@ export default function PaymentSuccessPage() {
             </p>
             <Link
               href="/payment"
-              className="bg-dark-orange inline-block rounded-md px-5 py-2 text-white shadow transition duration-200 hover:bg-gray-700"
+              className="bg-dark-orange hover:bg-dark-orange/90 inline-block rounded-md px-5 py-2 text-white shadow transition duration-200"
             >
               Go back to homepage
             </Link>

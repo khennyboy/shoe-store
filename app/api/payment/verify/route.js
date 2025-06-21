@@ -5,11 +5,11 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const { reference, userId, products } = body;
-
+    
     // ✅ Check for existing order with same reference
     const { data: existingOrders, error: checkError } = await supabase
       .from("orders")
-      .select("id")
+      .select("*")
       .eq("reference", reference);
 
     if (checkError) {
