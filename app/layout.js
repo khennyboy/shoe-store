@@ -17,7 +17,7 @@ export const metadata = {
     siteName: "SoleMate",
     images: [
       {
-        url: "https://shoe-store-ashy-two.vercel.app/og-banner.jpg",
+        url: "https://shoe-store-ashy-two.vercel.app/1200X630.jpeg",
         width: 1200,
         height: 630,
       },
@@ -32,7 +32,7 @@ export const metadata = {
     title: "SoleMate – Step Into Style & Comfort",
     description:
       "Premium footwear for men, women, and kids. Shop your SoleMate today.",
-    images: ["https://shoe-store-ashy-two.vercel.app/og-banner.jpg"],
+    images: ["https://shoe-store-ashy-two.vercel.app/1200X600.jpeg"],
   },
   icons: {
     icon: [

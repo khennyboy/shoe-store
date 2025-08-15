@@ -11,7 +11,7 @@ export default function HeadContent() {
     "@type": "Store",
     name: "SoleMate",
     url: "https://shoe-store-ashy-two.vercel.app/",
-    logo: "https://shoe-store-ashy-two.vercel.app/icon512.png",
+    logo: "https://shoe-store-ashy-two.vercel.app/512X512.jpeg",
     description:
       "SoleMate – stylish, comfortable, and affordable shoes for men, women, and kids.",
     contactPoint: {
