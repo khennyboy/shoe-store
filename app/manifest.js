@@ -8,9 +8,9 @@ export default function manifest() {
     theme_color: '#000000',
     icons: [
       {
-        src: '/icon512.png',
+        src: '/512X512.jpeg',
         sizes: '512x512',
-        type: 'image/png',
+        type: 'image/jpeg',
       }
     ],
   }
